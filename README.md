@@ -1,7 +1,4 @@
- **
-
-### tju_elm_project
-**   
+### tju_elm_project  
  **软件工程综合实践-饿了么外卖平台** 
 
 
