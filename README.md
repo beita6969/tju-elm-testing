@@ -6,7 +6,7 @@
 
 ### 项目一. elm_admin 
  
-elm_admin 是饿了么JDBC版项目，采用了JDBC+Mysql开发，是纯后端的字符界面操作数据库的命令行应用程序。
+elm_admin 是饿了么**JDBC**版项目，采用了**JDBC+Mysql**开发，是纯后端的字符界面操作数据库的命令行应用程序。
 
  **1. 简介** 
 
@@ -36,7 +36,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 ### 项目二.
  
 
-饿了么前端版项目是采用 HTML、CSS、JavaScript 开发的前端静态网页项目。
+饿了么前端版项目是采用**HTML、CSS、JavaScript**开发的前端静态网页项目。
 
  **1. 简介** 
 
