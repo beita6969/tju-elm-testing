@@ -76,7 +76,7 @@
 	flex-wrap: wrap;
 	justify-content: space-around;
 	align-content: center;
-	
+
 }
 
 .wrapper .foodtype li {
@@ -104,28 +104,109 @@
 }
 
 /********广告*********/
-.wrapper .advert{
+.wrapper .advert {
 	width: 95%;
 	margin: 0 auto;
 	height: 29vw;
 	background-image: url(../img/index_banner.png);
 	background-repeat: no-repeat;
 	background-size: cover;
-	
+
 	box-sizing: border-box;
 	padding: 2vw 6vw;
 }
-.wrapper .advert h3{
+
+.wrapper .advert h3 {
 	font-size: 4.2vw;
 	margin-bottom: 1.2vw;
 }
-.wrapper .advert p{
+
+.wrapper .advert p {
 	font-size: 3.4vw;
 	color: #666;
 	margin-bottom: 2.4vw;
 }
-.wrapper .advert a{
+
+.wrapper .advert a {
 	font-size: 3vw;
 	color: #C79060;
 	font-weight: 700;
+}
+
+/****************** 超级会员 ******************/
+.wrapper .vip {
+	/*不能用padding，背景色充满padding*/
+	width: 95%;
+	margin: 0 auto;
+	height: 11.5vw;
+	background-color: #FEEDC1;
+	margin-top: 1.3vw;
+	border-radius: 2px;
+	color: #644F1B;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.wrapper .vip .left {
+	display: flex;
+	align-items: center;
+	margin-left: 4vw;
+	user-select: none;
+}
+
+.wrapper .vip .left img {
+	width: 6vw;
+	height: 6vw;
+	margin-right: 2vw;
+}
+
+.wrapper .vip .left h3 {
+	font-size: 4vw;
+	margin-right: 2vw;
+}
+
+.wrapper .vip .left p {
+	font-size: 3vw;
+}
+
+.wrapper .vip .right {
+	font-size: 3vw;
+	margin-right: 4vw;
+	cursor: pointer;
+}
+
+/****************** 推荐商家部分 ******************/
+.wrapper .recommend {
+	width: 100%;
+	height: 14vw;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.wrapper .recommend .recommend-line {
+	width: 6vw;
+	height: 0.2vw;
+	background-color: #888;
+}
+
+.wrapper .recommend p {
+	font-size: 4vw;
+	margin: 0 4vw;
+}
+
+/****************** 推荐方式部分 ******************/
+.wrapper .recommendtype {
+	width: 100%;
+	height: 5vw;
+	margin-bottom: 5vw;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.wrapper .recommendtype li {
+	font-size: 3.5vw;
+	color: #555;
 }
