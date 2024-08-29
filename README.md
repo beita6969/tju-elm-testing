@@ -29,6 +29,7 @@ elm_admin.sql 创建数据库和初始数据。
 5) 本项目有两个入口：管理员入口、商家入口。
 
 i. 运行 ElmAdminEntry 中的 main 函数为管理员入口。
+
 ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
  **3.整体要求**  
