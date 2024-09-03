@@ -213,3 +213,60 @@ Svn、Git版本控制工具的使用
  VueCli 的使用
 
  多条件模糊查询的使用
+
+
+### 项目四：
+
+
+ **饿了么 SpringBoot 版本** 
+
+使用  **VUE+SpringBoot+AJAX**  技术开发 **前后端分离的 Web 应用程序** 
+
+ **整体要求**  
+
+ **1. 项目技术架构** 
+
+Jdk8 
+
+SpringBoot 
+
+MyBatis 
+
+MySql 
+
+Vue 
+
+ **2. 开发工具** 
+
+Hbuilder 
+
+STS（SpringToolSuite4）
+
+mysql-5.5.62-winx64 
+
+Tomcat8.5 
+
+Maven 
+
+ **3. 涉及的技术点** 
+
+AJAX 的使用
+
+SpringBoot 框架的使用
+
+MyBatis 框架的使用
+
+封装 Mapper 
+
+Service 层事务管理
+
+数据层层批量操作
+
+多对一与一对多的映射
+
+服务器端 json 数据转换
+
+VueCli 的使用
+
+多条件模糊查询的使用
+
