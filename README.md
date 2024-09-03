@@ -4,7 +4,7 @@
 
  
 
-### 项目一. elm_admin 
+### 项目一. JDBC
  
 elm_admin 是饿了么 **JDBC** 版项目，采用了 **JDBC+Mysql** 开发，是纯后端的字符界面操作数据库的命令行应用程序。
 
@@ -68,7 +68,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
  
 
-### 项目二.
+### 项目二. Vue3
  
 
 饿了么前端版项目是采用 **HTML、CSS、JavaScript** 开发的前端静态网页项目。
@@ -133,7 +133,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
  第三方字体库的使用
 
 
-### 项目三.
+### 项目三. Servlet
  
 
 饿了么 **Servlet** 版本
@@ -215,7 +215,7 @@ Svn、Git版本控制工具的使用
  多条件模糊查询的使用
 
 
-### 项目四：
+### 项目四. SpringBoot
 
 
  **饿了么 SpringBoot 版本** 
