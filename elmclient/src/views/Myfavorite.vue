@@ -1,6 +1,6 @@
 <template>
 	<div class="wrapper">
-	
+
 		<!-- header部分 -->
 		<header>
 			<p>商家列表</p>
@@ -18,22 +18,7 @@
 					<p>&#165;{{ item.starPrice }}起送 | &#165;{{ item.deliveryPrice }}配送</p>
 					<p>{{ item.businessExplain }}</p>
 				</div>
-				<div class="business-actions">
-					<div class="dianzan">
-						<button @click.stop="likeBusiness(item.businessId)"
-							:class="{ 'liked': likes[item.businessId].liked }">
-							<i class="fa fa-thumbs-up"></i>
-						</button>
-						<span v-if="likes[item.businessId].count >= 0" class="like-count">{{
-							likes[item.businessId].count
-							}}</span>
-					</div>
-					<button @click.stop="favoriteBusiness(item.businessId)"
-						:class="{ 'favorited': favorites[item.businessId].favorited }">
-						<i class="fa fa-star"></i>
-					</button>
-					<button @click.stop="commentBusiness(item.businessId)"><i class="fa fa-comment"></i></button>
-				</div>
+
 
 			</li>
 		</ul>
@@ -58,6 +43,7 @@ export default {
 	setup() {
 		const orderTypeId = ref(null);
 		const businessArr = ref([]);
+		const businessId = ref([]);
 		const favarr = ref([]);
 		const user = ref(null);
 		const route = useRoute();
@@ -66,69 +52,30 @@ export default {
 		const iflike = ref(0);
 		const favornum = ref([]);
 		const favorites = ref({});
-		onMounted(() => {
+		onMounted(async () => {
 			orderTypeId.value = route.query.orderTypeId;
 			user.value = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null;
 
 			// 根据orderTypeId查询商家信息
 			if (user.value) {
-				axios.post('FavoriteController/listFavoriteByUserId', { userId: user.value.userId })
+				await axios.post('FavoriteController/listFavoriteByUserId', { userId: user.value.userId })
 					.then(response => {
-						favarr.value = response.data;
-						console.log( response.data);
-						axios.post('BusinessController/listBusinessByOrderTypeId', { orderTypeId: orderTypeId.value })
-							.then(response => {
-								businessArr.value = response.data;
-
-								businessArr.value.forEach(item => {
-
-									axios.post('LikesController/getLikesBybusinessId', { businessId: item.businessId })
-										.then(response => {
-											favornum.value[item.businessId] = response.data;
-											axios.post('LikesController/getLikesByUserIdByBusinessId', { userId: user.value.userId, businessId: item.businessId })
-												.then(response => {
-													iflike.value = response.data;
-													console.log(favornum.value[item.businessId]);
-													if (iflike.value === 1) {
-														likes.value[item.businessId] = {
-															liked: true,
-															count: favornum.value[item.businessId] || 0
-														};
-													}
-													else {
-														likes.value[item.businessId] = {
-															liked: false,
-															count: favornum.value[item.businessId] || 0
-														};
-													}
-
-												
-													if (favarr.value.includes(item.businessId)) {
-														favorites.value[item.businessId] = {
-															favorited: true
-														}
-													}
-													else {
-														favorites.value[item.businessId] = {
-															favorited: false
-														}
-													}
-												})
-										})
-								});
-							});
-
-
-						// 判断是否登录
-						if (user.value !== null) {
-							listCart();
-						}
+						businessId.value = response.data;
+					})
+					.catch(error => {
+						console.error(error);
+					});
+				businessId.value.forEach(async item => {
+					await axios.post('BusinessController/getBusinessById', { businessId: item }).then(response => {
+						businessArr.value.push(response.data);
 					}).catch(error => {
 						console.error(error);
 					});
-
-
+				
+				});
 			}
+
+				
 			else {
 				alert('用户未登录，请先登录！');
 				router.push({ path: '/login' });
@@ -173,7 +120,7 @@ export default {
 					liked: false,
 					count: favornum.value || 0
 				};
-	
+
 			} else {
 
 				// 发送点赞请求
@@ -192,7 +139,7 @@ export default {
 					liked: true,
 					count: favornum.value || 0
 				};
-		
+
 			}
 		};
 		const favoriteBusiness = (businessId) => {
@@ -340,9 +287,9 @@ export default {
 	cursor: pointer;
 	background-color: #0097FF;
 	color: white;
-	width:10vw;
+	width: 10vw;
 	height: 5vw;
-    display: flex;
+	display: flex;
 	justify-content: center;
 	align-items: center;
 }
@@ -372,19 +319,22 @@ export default {
 	background-color: #ffcc00;
 	/* 收藏后的颜色 */
 }
-.wrapper .business li .business-actions .dianzan{
+
+.wrapper .business li .business-actions .dianzan {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
 }
-.wrapper .business li .business-actions .dianzan span{
+
+.wrapper .business li .business-actions .dianzan span {
 	display: flex;
 	font-size: 5vw;
 	justify-content: center;
 }
-.wrapper .business li .business-actions .dianzan button{
-	display:flex;
+
+.wrapper .business li .business-actions .dianzan button {
+	display: flex;
 	flex: 1;
 }
 </style>

@@ -2,7 +2,7 @@
 	<div class="wrapper">
 	  <!-- header部分 -->
 	  <header>
-		<p>用户登陆</p>
+		<p>商家登陆</p>
 	  </header>
   
 	  <!-- 表单部分 -->
@@ -50,12 +50,12 @@
 	  const userId = ref('');
 	  const password = ref('');
 	  const router = useRouter();
-
+	  const businessId = ref('');
 
 	  const setSessionStorage = (key, value) => {
       window.sessionStorage.setItem(key, JSON.stringify(value)); // 自定义会话存储函数
     };
-	  const login = () => {
+	  const login = async () => {
 		if (userId.value === '') {
 		  alert('手机号码不能为空！');
 		  return;
@@ -64,18 +64,24 @@
 		  alert('密码不能为空！');
 		  return;
 		}
-  
+		console.log(userId.value);
+		await axios.post('BusinessController/getBusinessIdByPhoneNumber', {
+		  phoneNumber: userId.value
+			}).then(response => {
+				businessId.value = response.data;
+
+		});
 		// 登录请求
-		axios.post('UserController/getUserByIdByPass', {
+		await axios.post('BusinessController/getBusinessByIdByPass', {
 		  userId: userId.value,
 		  password: password.value
 		}).then(response => {
 		  const user = response.data;
-		  if (!user) {
+		  if (user===0) {
 			alert('用户名或密码不正确！');
 		  } else {
-			setSessionStorage('user', user);
-			router.push({ path: '/index' });
+			console.log(businessId.value)
+			router.push({ path: '/businessView' , query: { businessId: businessId.value } });
 		  }
 		}).catch(error => {
 		  console.error(error);
@@ -83,7 +89,7 @@
 	  };
   
 	  const register = () => {
-		router.push({ path: 'register' });
+		router.push({ path: 'businessRegister' });
 	  };
   
 	  return {

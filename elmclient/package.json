@@ -7,22 +7,24 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "axios": "^0.19.2",
-    "core-js": "^3.6.5",
+    "axios": "^1.7.7",
+    "cnpm": "^9.4.0",
+    "core-js": "^3.8.3",
     "font-awesome": "^4.7.0",
-    "qs": "^6.9.4",
-    "vue": "^2.6.11",
-    "vue-router": "^3.2.0"
+    "install": "^0.13.0",
+    "qs": "^6.13.0",
+    "vue": "^3.2.13",
+    "vue-router": "^4.4.3"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.4.0",
-    "@vue/cli-plugin-router": "^4.4.0",
-    "@vue/cli-service": "^4.4.0",
-    "vue-template-compiler": "^2.6.11"
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-service": "~5.0.0"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not dead"
+    "not dead",
+    "not ie 11"
   ]
 }

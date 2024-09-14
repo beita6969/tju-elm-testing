@@ -2,7 +2,7 @@
 	<div class="wrapper">
 		<!-- header部分 -->
 		<header>
-			<p>用户注册</p>
+			<p>商户注册</p>
 		</header>
 
 		<!-- 表单部分 -->
@@ -31,35 +31,11 @@
 					<input type="password" v-model="confirmPassword" placeholder="确认密码">
 				</div>
 			</li>
-			<li>
-				<div class="title">
-					用户名称：
-				</div>
-				<div class="content">
-					<input type="text" v-model="user.userName" placeholder="用户名称">
-				</div>
-			</li>
-			<li>
-				<div class="title">
-					性别：
-				</div>
-				<div class="content" style="font-size: 3vw;">
-					<input type="radio" v-model="user.userSex" value="1" style="width:6vw;height: 3.2vw;">男
-					<input type="radio" v-model="user.userSex" value="0" style="width:6vw;height: 3.2vw;">女
-				</div>
-			</li>
-			<li>
-				<div class="title">
-					上传头像：
-				</div>
-				<div class="content">
-					<input type="file" @change="handleFileUpload" accept="image/*">
-				</div>
-			</li>
+			
 		</ul>
 
 		<div class="button-login">
-			<button @click="register">注册</button>
+			<button @click="register">去审核</button>
 		</div>
 
 		<!-- 底部菜单部分 -->
@@ -75,54 +51,35 @@ import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 export default {
-	name: 'Register',
+	name: 'BusinessRegister',
 	setup() {
 		const router = useRouter();
 		const user = reactive({
 			userId: '',
-			password: '',
-			userName: '',
-			userSex: 1,
-			userImg: ''
+			password: ''
+
+		
 		});
 		const confirmPassword = ref('');
 		const reg = /^1[3456789]\d{9}$/;
 		const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
+		const businessId = ref(null); // 商家id
 		const exist = ref(false); // 用于判断手机号是否已存在
 		const checkUserId = () => {
-			axios.post('UserController/userIdExists', {
-				userId: user.userId,
+			axios.post('BusinessController/checkBusiness', {
+				phoneNumber: user.userId,
 			}).then(response => {
 				console.log(response.data);
 				if (response.data == 1) {
 					user.userId = '';
-					alert('此手机号码已存在！');
+					alert('此手机号码注册的商家已存在！');
 				}
 			}).catch(error => {
 				console.error(error);
 			});
 		};
-		const avatar = ref(null); // 用于存储头像文件
-
-		const handleFileUpload = (event) => {
-			const file = event.target.files[0];
-			console.log(file);
-			if (file) {
-				const reader = new FileReader();
-				reader.onload = (e) => {
-					const base64 = e.target.result;
-					avatar.value = base64;
-					console.log(base64); // 可选：用于调试
-				};
-				reader.readAsDataURL(file);
-				console.log(avatar.value); // 可选：用于调试
-			}
-
-		};
-
-
-		const register = () => {
+	
+		const register = async() => {
 			if (!reg.test(user.userId)) {
 				alert('手机号码格式错误，请重新输入！');
 				return;
@@ -135,23 +92,17 @@ export default {
 				alert('两次输入的密码不一致！');
 				return;
 			}
-			if (user.userName == '') {
-				alert('用户名不能为空！');
-				return;
-			}
-			if (user.userName.length>8) {
-				alert('用户名过长！');
-				return;
-			}
+			
+			
 			// 注册请求
-			axios.post('UserController/saveUser', user)
+			await axios.post('BusinessController/saveBusiness', {password:user.password,phoneNumber:user.userId})
 				.then(response => {
+					console.log(response.data);
 					if (response.data > 0) {
-						console.log(111111);
-						alert('注册成功！');
-						router.push({path: '/index'});
+						alert('审核成功！');
+						router.push({path: '/businessInformation', query: { businessId: response.data }});
 					} else {
-						alert('注册失败！');
+						alert('审核失败！');
 					}
 				}).catch(error => {
 					console.error(error);
@@ -163,7 +114,7 @@ export default {
 			user,
 			confirmPassword,
 			checkUserId,
-			handleFileUpload,
+
 			register
 
 		};
