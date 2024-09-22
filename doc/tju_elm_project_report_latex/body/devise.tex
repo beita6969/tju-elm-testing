@@ -1,0 +1,731 @@
+
+\chapter{项目设计文档}
+
+\section{数据库设计}
+
+\subsection{business表}
+
+
+\begin{longtable}[]{@{}lllll@{}}
+\toprule
+Field & Null & Key & Default & Extra\tabularnewline
+businessId & NO & PRI & NULL & auto\_increment\tabularnewline
+phoneNumber & NO & & NULL &\tabularnewline
+password & NO & & NULL &\tabularnewline
+businessName & NO & & 未命名商家 &\tabularnewline
+businessAddress & YES & & NULL &\tabularnewline
+businessExplain & YES & & NULL &\tabularnewline
+businessImg & YES & & NULL &\tabularnewline
+orderTypeId & YES & & NULL &\tabularnewline
+starPrice & YES & & 0 &\tabularnewline
+deliveryPrice & YES & & 0 &\tabularnewline
+remarks & YES & & NULL &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{cart表}
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+Field & Type & Null & Key & Default & Extra\tabularnewline
+cartId & int & NO & PRI & NULL & auto\_increment\tabularnewline
+foodId & int & NO & & NULL &\tabularnewline
+businessId & int & NO & & NULL &\tabularnewline
+userId & varchar(20) & NO & & NULL &\tabularnewline
+quantity & int & NO & & NULL &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{chats表}
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+Field & Type & Null & Key & Default & Extra\tabularnewline
+currentUserId & varchar(50) & NO & & NULL &\tabularnewline
+senderUserId & varchar(50) & NO & & NULL &\tabularnewline
+receiverUserId & varchar(50) & NO & & NULL &\tabularnewline
+message & varchar(255) & YES & & NULL &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{deliveryaddress表}
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+Field & Type & Null & Key & Default & Extra\tabularnewline
+daId & int & NO & PRI & NULL & auto\_increment\tabularnewline
+contactName & varchar(20) & NO & & NULL &\tabularnewline
+contactSex & int & NO & & NULL &\tabularnewline
+contactTel & varchar(20) & NO & & NULL &\tabularnewline
+address & varchar(100) & NO & & NULL &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{favorite表}
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+Field & Type & Null & Key & Default & Extra\tabularnewline
+userId & varchar(20) & NO & & NULL &\tabularnewline
+businessId & int & NO & & NULL &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{food表}
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+Field & Type & Null & Key & Default & Extra\tabularnewline
+foodId & int & NO & PRI & NULL & auto\_increment\tabularnewline
+foodName & varchar(30) & NO & & NULL &\tabularnewline
+foodExplain & varchar(30) & NO & & NULL &\tabularnewline
+foodImg & mediumtext & NO & & NULL &\tabularnewline
+foodPrice & decimal(5,2) & NO & & NULL &\tabularnewline
+businessId & int & NO & & NULL &\tabularnewline
+remarks & varchar(40) & YES & & NULL &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{likes表}
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+Field & Type & Null & Key & Default & Extra\tabularnewline
+userId & varchar(20) & NO & PRI & NULL &\tabularnewline
+businessId & int & NO & PRI & NULL &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{orderdetailet表}
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+Field & Type & Null & Key & Default & Extra\tabularnewline
+odId & int & NO & PRI & NULL & auto\_increment\tabularnewline
+foodName & varchar(40) & YES & & NULL &\tabularnewline
+orderId & int & NO & & NULL &\tabularnewline
+foodId & int & NO & & NULL &\tabularnewline
+quantity & int & NO & & NULL &\tabularnewline
+priceAtThatTime & decimal(5,2) & NO & & 0 &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{orderdetailet food表} 
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+Field & Type & Null & Key & Default & Extra\tabularnewline
+odId & int & YES & & NULL &\tabularnewline
+orderId & int & YES & & NULL &\tabularnewline
+foodId & int & YES & & NULL &\tabularnewline
+quantity & int & YES & & NULL &\tabularnewline
+priceAtThatTime & decimal(5,2) & YES & & NULL &\tabularnewline
+foodName & varchar(255) & YES & & NULL &\tabularnewline
+foodExplain & varchar(255) & YES & & NULL &\tabularnewline
+foodImg & varchar(255) & YES & & NULL &\tabularnewline
+businessId & int & YES & & NULL &\tabularnewline
+remarks & varchar(255) & YES & & NULL &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{orders表}
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+Field & Type & Null & Key & Default & Extra\tabularnewline
+orderId & int & NO & PRI & NULL & auto\_increment\tabularnewline
+userId & varchar(20) & NO & & NULL &\tabularnewline
+businessId & int & NO & & NULL &\tabularnewline
+orderDate & date & YES & & NULL &\tabularnewline
+orderTotal & decimal(7,2) unsigned zerofill & NO & & 0 &\tabularnewline
+daId & int & YES & & NULL &\tabularnewline
+orderState & int & NO & & 0 &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{remarks表}
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+Field & Type & Null & Key & Default & Extra\tabularnewline
+remark & varchar(255) & YES & & NULL &\tabularnewline
+businessId & int & YES & & NULL &\tabularnewline
+remarkDate & date & YES & & NULL &\tabularnewline
+userId & varchar(20) & YES & & NULL &\tabularnewline
+remarkId & int & NO & PRI & NULL & auto\_increment\tabularnewline
+userName & varchar(20) & YES & & NULL &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{searchhistory表}
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+Field & Type & Null & Key & Default & Extra\tabularnewline
+userId & varchar(40) & NO & & NULL &\tabularnewline
+searchContent & varchar(255) & NO & & NULL &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{user表}
+
+\begin{longtable}[]{@{}llllll@{}}
+\toprule
+Field & Type & Null & Key & Default & Extra\tabularnewline
+userId & varchar(20) & NO & PRI & NULL &\tabularnewline
+password & varchar(20) & NO & & NULL &\tabularnewline
+userName & varchar(20) & NO & MUL & NULL &\tabularnewline
+userSex & int & NO & & 1 &\tabularnewline
+userImg & mediumtext & YES & & NULL &\tabularnewline
+delTag & int & NO & & 1 &\tabularnewline
+\bottomrule
+\end{longtable}
+
+
+\section{前端设计}
+
+\subsection{底部导航栏}
+    
+
+
+    首页：返回主界面。
+
+    我的：包含用户的个人中心，如订单、收藏、账户设置等。
+
+    发现：包含发现新商家或新活动的功能。
+
+    订单：查看和管理用户的订单。
+\subsection{首页}
+
+    顶部导航栏：
+
+    登录和注册按钮，允许用户进行账户管理。
+
+    天津大学北洋园校区的下拉菜单，用于选择不同的校区或位置。
+
+    搜索栏：
+
+    提供搜索功能，用户可以搜索饿了么平台上的商家或商品名称。
+
+    分类标签：
+
+    早餐美食：可能包含早餐相关的食品选项。
+
+    跑腿代购：提供代购服务，如汉堡披萨、甜品饮品等。
+
+    速食简餐：快速方便的食品选择。
+
+    地方小吃：提供地方特色小吃。
+
+    米粉面馆：提供米粉、面条、包子、粥、炸鸡、炸串等食品。
+
+    品质套餐：提供搭配齐全的套餐选项。
+
+    促销活动：
+
+    立即抢购：可能是限时抢购或特价活动的入口。
+
+    超级会员：提供会员服务，每月享受超值权益。
+
+    商家推荐：
+
+    推荐商家列表，显示商家名称、评分、月销量、配送信息等。
+
+    筛选和排序功能：
+
+    筛选：允许用户根据综合排序、距离最近、销量最高等条件筛选商家。
+
+    排序：提供排序功能，用户可以根据不同的标准对商家进行排序。
+
+    商家详情：
+
+    万家饺子（软件园E18店）：显示商家的详细信息，包括评分、月销量、配送费用、起送价、配送距离和预计送达时间。
+
+    蜂鸟专送：表明配送服务由蜂鸟专送提供。
+\subsection{登录}
+
+    密码输入区域：
+
+    两个密码输入框，用于输入密码和确认密码。
+
+    操作按钮：
+
+    登录按钮：用于提交登录信息。
+
+    去注册链接：引导新用户注册账户。
+\subsection{商家列表} 
+
+    标题：
+
+    商家列表：标明这是商家列表的页面。
+
+    商家信息：
+
+    万家饺子（软件园E18店）：商家名称，包括分店信息。
+
+    商品种类：各种饺子，说明商家提供的主要商品。
+
+    小锅饭豆腐馆（全运店）：商家名称，包括分店信息。
+
+    商品种类：小锅套餐，说明商家提供的主要商品。
+
+    米村拌饭（浑南店）：商家名称，包括分店信息。
+
+    商品种类：拌饭、拌饭套餐、串，说明商家提供的主要商品。
+
+    申记串道（中海康城店）：商家名称，包括分店信息。
+
+    商品种类：烤串、炸串，说明商家提供的主要商品。
+    \subsection{商家信息}
+ 
+
+    食品名称：食品的名称，包括烹饪方式。
+
+    食品描述：描述食品的主要食材和特点。
+
+    价格信息：食物的价格
+
+    配送费用：另需配送费，说明除了食品价格外，还需要额外支付的费用。
+
+    起送金额：标明用户下单的最低金额要求。
+    \subsection{商单信息}
+
+    订单标题：
+
+    确认订单：标明这是用户需要确认的订单信息。
+
+    配送信息：订单配送至：提示用户订单将被配送到的地址，具体的配送地址，收货人的联系电话。
+
+    商家信息：订单来自的商家名称和分店信息。
+
+    订单明细：用户所点的食品名称和数量，食品的价格，订单的配送费用。
+
+    支付按钮：用户点击此按钮进行支付。
+
+    订单总额：包括食品价格和配送费用的订单总金额。
+
+    \subsection{支付信息}
+
+    支付标题：
+
+    在线支付：标明这是用户进行在线支付的页面。
+
+    订单信息：
+
+    订单信息：提示用户这是他们即将支付的订单详情。
+
+    商家及订单金额：
+
+    订单来自的商家名称和分店信息。
+
+    订单的总金额，可能包括食品价格和配送费用。
+
+    支付方式：
+
+    支付宝：提供支付宝作为支付选项。
+
+    微信支付：提供微信支付作为支付选项。
+
+    支付按钮：用户点击此按钮以确认支付订单。
+    \section{后端设计}
+    
+    \subsection{``我的''页面新增api}
+
+    3.1.1.头像与昵称的获取接口：（原接口）
+
+    UserController / getUserByIdByPass
+
+    参数：userId、password
+
+    返回值：user对象
+
+    3.1.2.修改头像：（新增接口）
+
+    UserController / changeUserAvatar
+
+    参数：userId , base64 (头像的base64编码)
+
+    返回值：int（影响的行数）
+
+    3.1.3.修改昵称：（新增接口）
+
+    UserController / changeUserName
+
+    参数：userId , userName
+
+    返回值：int (影响的行数)
+
+    3.1.4.修改密码:（新增接口）
+
+    UserController / changeUserPassword
+
+    参数：userId , oldPassword , newPassword
+
+    返回值：int (影响的行数)
+
+    3.1.5 UserController/saveUser
+
+    参数：userId ， password ， userName ， userSex ， userImg (可选)
+
+    返回值：int （影响的行数）
+
+    功能：向用户表中添加一条记录
+    \subsection{评论和展示评论}
+
+    3.2.1 RemarkController / listRemarksByBusinessId
+
+    参数：businessId
+
+    返回值：remark数组
+
+    功能： 根据商家编号查询所属商家的所有评论信息
+
+    3.2.2 RemarkController / saveRemarks
+
+    参数：remark,userId,userName,businessId
+
+    返回值：int （评论编号）
+
+    功能：向评论表中添加一条记录，并返回评论编号
+
+    3.2.3 RemarkController / removeOneRemark
+
+    参数：userName userId businessId remark
+
+    返回值：int 影响的行数
+
+    功能：用户删除在某商家下的一条评论
+    \subsection{收藏商家与展示收藏列表}
+
+    3.3.1 FavoriteController / listFavoriteByUserId
+
+    参数：userId
+
+    返回值： businessId数组
+
+    功能： 查询用户收藏的所有商家
+
+    3.3.2 FavoriteController / saveFavoriteBusinessId
+
+    参数：userId , businessId
+
+    返回值：int （影响的行数）
+
+    功能：当前用户收藏该商家（向收藏表中添加一条数据）
+
+    3.3.3 FavoriteController / removeFavoriteBusinessId
+
+    参数：userId , businessId
+
+    返回值：int （影响的行数）
+
+    功能：当前用户取消收藏该商家
+    \subsection{点赞}
+
+    3.4.1 LikesController / getLikesBybusinessId
+
+    参数：businessId
+
+    返回值： int (此商家的点赞总数量)
+
+    功能： 查询某商家的点赞总数量
+
+    3.4.2 LikesController / saveLikes
+
+    参数：userId , businessId
+
+    返回值：int （影响的行数）
+
+    功能：用户点赞某一个商家
+
+    3.4.3 LikesController / removeLikes
+
+    参数：userId , businessId
+
+    返回值：int （影响的行数）
+
+    功能：用户取消点赞某一个商家
+
+    3.4.4 LikesController / getLikesByUserIdByBusinessId
+
+    参数：userId , businessId
+
+    返回值：int （0：之前此用户对此商家未点赞
+
+    1：之前此用户对此商家点过赞）
+
+    功能：判断此用户对此商家之前有没有点过赞，
+
+    若点过赞，则再点一次是取消点赞
+
+    若未点过赞，则点一次是点赞
+    \subsection{私信}
+
+    3.5.1 ChatsController / removeChatsAllByCurrentUserId
+
+    参数：currentUserId
+
+    返回值：int （影响的行数）
+
+    功能：清空当前用户的私信列表
+
+    3.5.2 ChatsController / removeChatsByTwoUserIdByMessage
+
+    参数：currentUserId , receiverUserId , message
+
+    返回值：int （影响的行数）
+
+    功能：删除当前用户currentUserId的与
+
+    用户receiverUserId的内容为message的消息
+
+    3.5.3 ChatsController / recallChatsByTwoUserIdByMessage
+
+    参数：currentUserId , receiverUserId , message
+
+    返回值：int （影响的行数）
+
+    功能：撤回当前用户currentUserId的发送给
+
+    用户receiverUserId的内容为message的消息
+
+    3.5.4 ChatsController / getChatsByUserId
+
+    参数：currentUserId
+
+    返回值： chats数组
+
+    功能： 查询当前用户的所有私信列表
+
+    3.5.5 ChatsController / saveChats
+
+    参数：senderUserId , receiverUserId , message
+
+    返回值：int （影响的行数）
+
+    功能：新增私信记录到总私信表中
+    \subsection{商家登陆}
+
+    3.6.1 BusinessController / saveBusiness
+
+    参数：businessName ，password
+
+    返回值：int (商家编号businessId)
+
+    功能： 商家注册 并返回代表商家的唯一编号作为账号
+
+    3.6.2 BusinessController / updateBusiness
+
+    参数：businessId , businessAddress ,
+
+    businessExplain , businessImg ,
+
+    starPrice , deliveryPrice , orderTypeId
+
+    返回值: int (影响的行数)
+
+    功能：更改（完善）商家的信息
+
+    3.6.3 FoodController / addFood
+
+    参数：businessId , foodName , foodExplain ,
+
+    foodImg , foodPrice
+
+    返回值：int （食品的标号foodId）
+
+    功能：商家可以上架自己的商品
+
+    3.6.4 BusinessController / getBusinessByIdByPass
+
+    参数：businessId , password
+
+    返回值：int （影响的行数）
+
+    功能：商家登录
+    \subsection{搜索与搜索历史}
+
+    3.7.1 SearchController / listBusiness
+
+    参数：searchContent , userId (需要更新userId的这条历史搜索)
+
+    返回值：business数组
+
+    功能：根据关键词搜索商家列表
+
+    3.7.2 SearchController / getHistoryByUserId
+
+    参数：userId
+
+    返回值：searchContent
+
+    功能：查询用户上一次的一条搜索记录
+
+    3.7.3 BusinessController / listBusinessByOrderTypeId
+
+    参数：orderTypeId
+
+    返回值：business数组
+
+    功能：根据点餐分类编号查询所属商家信息
+
+    3.7.4 BusinessController / getBusinessById
+
+    参数：businessId
+
+    返回值：business对象
+
+    功能：根据商家编号查询商家信息
+
+    3.7.5 RemarkController / listRemarksByBusinessId
+
+    参数：businessId
+
+    返回值：remark数组
+
+    功能： 根据商家编号查询所属商家的所有评论信息
+    \subsection{原项目基础API}
+
+    \protect\hypertarget{2.3.1.business}{}{}3.8.1 business
+
+    3.8.1.1 BusinessController/listBusinessByOrderTypeId
+
+    参数：orderTypeId
+
+    返回值：business数组
+
+    功能：根据点餐分类编号查询所属商家信息
+
+    3.8.1.2 BusinessController/getBusinessById
+
+    参数：businessId
+
+    返回值：business对象
+
+    功能：根据商家编号查询商家信息
+
+    \protect\hypertarget{2.3.2.food}{}{}3.8.2 food
+
+    3.8.2.1. FoodController/listFoodByBusinessId
+
+    参数：businessId返回值：food数组
+
+    功能：根据商家编号查询所属食品信息
+
+    \protect\hypertarget{2.3.3.cart}{}{}3.8.3 cart
+
+    3.8.3.1 CartController/listCart
+
+    参数：userId、businessId（可选）
+
+    返回值：cart数组（多对一：所属商家信息、所属食品信息）功能：根据用户编号查询此用户所有购物车信息
+
+    根据用户编号和商家编号，查询此用户购物车中某个商家的所有购物车信息
+
+    3.8.3.2 CartController/saveCart
+
+    参数：userId、businessId、foodId返回值：int（影响的行数）
+
+    功能：向购物车表中添加一条记录
+
+    3.8.3.3 CartController/updateCart
+
+    参数：userId、businessId、foodId、quantity返回值：int（影响的行数）
+
+    功能：根据用户编号、商家编号、食品编号更新数量
+
+    3.8.3.4 CartController/removeCart
+
+    参数：userId、businessId、foodId（可选）返回值：int（影响的行数）
+
+    功能：根据用户编号、商家编号、食品编号删除购物车表中的一条食品记录根据用户编号、商家编号删除购物车表中的多条条记录
+
+    \protect\hypertarget{2.3.4.deliveryAddress}{}{}3.8.4 deliveryAddress
+
+    3.8.4.1 DeliveryAddressController/listDeliveryAddressByUserId
+
+    参数：userId
+
+    返回值：deliveryAddress数组
+
+    功能：根据用户编号查询所属送货地址
+
+    3.8.4.2 DeliveryAddressController/getDeliveryAddressById
+
+    参数：daId
+
+    返回值：deliveryAddress对象
+
+    功能：根据送货地址编号查询送货地址
+
+    3.8.4.3 DeliveryAddressController/saveDeliveryAddress
+
+    参数：contactName、contactSex、contactTel、address、userId返回值：int（影响的行数）
+
+    功能：向送货地址表中添加一条记录
+
+    3.8.4.4 DeliveryAddressController/updateDeliveryAddress
+
+    参数：daId、contactName、contactSex、contactTel、address、userId返回值：int（影响的行数）
+
+    功能：根据送货地址编号更新送货地址信息
+
+    3.8.4.5 DeliveryAddressController/removeDeliveryAddress
+
+    参数：daId
+
+    返回值：int（影响的行数）
+
+    功能：根据送货地址编号删除一条记录
+
+    \protect\hypertarget{2.3.5.orders}{}{}3.8.5 orders
+
+    3.8.5.1 OrdersController/createOrders
+
+    参数：userId、businessId、daId、orderTotal返回值：int（订单编号）
+
+    功能：根据用户编号、商家编号、订单总金额、送货地址编号向订单表中添加一条记录，并获取自动生成的订单编号，
+
+    然后根据用户编号、商家编号从购物车表中查询所有数据，批量添加到订单明细表中，然后根据用户编号、商家编号删除购物车表中的数据。
+
+    3.8.5.2 OrdersController/getOrdersById
+
+    参数：orderId
+
+    返回值：orders对象（包括多对一：商家信息； 一对多：订单明细信息）
+
+    功能：根据订单编号查询订单信息，包括所属商家信息，和此订单的所有订单明细信息
+
+    3.8.5.3 OrdersController/listOrdersByUserId
+
+    参数：userId
+
+    返回值：orders数组（包括多对一：商家信息；
+    一对多：订单明细信息）功能：根据用户编号查询此用户的所有订单信息
+
+    新增：
+
+    3.8.5.4.OrdersController / payOk
+
+    参数：orderId
+
+    返回值：int （影响的行数）
+
+    功能：改变订单属性，将未支付0转成已支付1
+
+    \protect\hypertarget{2.3.6.user}{}{}3.8.6 user
+
+    3.8.6.1 UserController/getUserByIdByPass
+
+    参数：userId、password返回值：user对象
+
+    功能：根据用户编号与密码查询用户信息
+
+    3.8.6.2 UserController/getUserById
+
+    参数：userId
+
+    返回值：int（返回行数）
+
+    功能：根据用户编号查询用户表返回的行数
+
