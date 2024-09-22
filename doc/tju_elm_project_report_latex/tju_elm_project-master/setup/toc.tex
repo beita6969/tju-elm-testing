@@ -1,0 +1,14 @@
+% !Mode:: "TeX:UTF-8"
+
+% 目录
+\defaultfont
+\clearpage{
+    \pagestyle{empty}
+    \cleardoublepage
+    \setcounter{page}{1}                                 % 单独从 1 开始编页码
+    \pagenumbering{arabic}
+    \titleformat{\chapter}{\centering\sanhao\hei}{\chaptername}{2em}{} % 设置目录两字的格式
+    \pdfbookmark[0]{目~~录}{mulu}
+    \tableofcontents                                     % 中文目录
+    \thispagestyle{plain}
+}

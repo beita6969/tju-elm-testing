@@ -1,0 +1,199 @@
+
+\chapter{项目测试文档}
+
+\section{项目背景}
+
+  饿了吧是一款面向各年龄段人群的外卖软件，让目标客户足不出户享受形形色色各个菜系的美食，并且让用户方便地了解不同商家的信息和菜品。
+  \section{编写目的}
+  
+
+  该文档的目标人群是软件的开发团队以及使用软件的目标客户，以及软件的功能审核人员。给出测试方式和测试结果，方便审核人员对软件功能的进一步审核，也能够使用户对软件的功能更加了解。
+  
+  \section{测试人员}
+
+  本次测试的主要人员是谢帛洋和杨宇鑫。
+
+  \section{测试目标}
+  在用使用软件之前，尽可能的发现软件中存在的错误和不合理之处，排除软件中存在的错和不合理之处，排出软件中潜在的错误，最终把高质量的软件系统交付给用户。系统的测试覆盖范围：功能、性能、UI、安全性、兼容性。
+
+  \section{测试要求}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+测试系统 & Windows11\tabularnewline
+数据库版本 & Mysql 8.0\tabularnewline
+其他 & VsCode、IDEA、Eclipse\tabularnewline
+\bottomrule
+\end{longtable}
+
+\section{测试方法}
+
+系统的功能测试选用了手工测试，运用黑盒测试中的等价类划分、边界值分析、错误推断、因果图法。
+
+UI方面的测试包括：易用性测试、规范性测试、帮助设施测试、合理性测试、美观与协调性测试、独特
+性测试、快捷方法组合组合测试。
+
+系统的安全性、兼容性、配置测试也是手工测试
+
+单元测试采用方法是白色测试，功能测试采用黑盒测试
+
+\section{测试内容}
+
+
+\subsection{单元测试}
+
+首先依照系统、子系统和模块进行划分名单时最终的单元必须是功能模块，或者面向对象过程中的若干类，单元测试是对功能模块进行正确性验证的测试工作，也是后续测试的基础。目的在于发现各模块内部可能存在的各种差错，因此需要从程序内部结构出发设计测试用例，着重考虑以下五个方面：
+
+模块接口：对所测模块的数据流进行测试。
+
+局部数据结构：检查不正确不一致的数据类型说明、适用尚未赋值或者尚未初始化的变量、错误的初始值或者缺省值
+
+路径：设计测试用例查找由于不正确计算（算法错、表达式的符号不正确、运算精度不够等）不正确的比较或者不正常的测试流（包括不同数据类型的相互比较、不适当地修改了循环变量、错误的或不可能的循环终止条件等）检查模块有没有对于常见的条件设计比较完善的错误处理功能，保证其逻辑上的正确性，注意设计数据流、控制流中刚好等于、大于或小于确定的比较直的用例。
+
+\subsection{集成测试}
+
+集成测试也叫组装测试、联合测试。通常在单元测试的基础上需要将所有的模块按照设计要求组装系统，这时需要考虑的问题如下：
+
+（1）把各个模块连接起来，模块接口的数据是否会丢失
+
+（2）一个模块的功能是否会对另一个模块的功能产生不利的影响
+
+（3）全局数据结构是否有问题
+
+（4）单元模块的误差积累起来，是否会放大，从而达到不能接受对策程度。我们在组装的时候可以参考采用一次性组装方式或者增值式组装方式
+
+\subsection{系统测试}
+
+（1）功能测试
+
+验证系统功能是否符合其需求规格说明书，核实系统功能上是否完整，没有冗余和遗漏功能。详细介绍如下表：
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+测试范围 &
+验证数据精确度、数据类型、业务功能等相关方面的正确性\tabularnewline
+测试目标 & 核实所有功能均已正常实现、即是否与需求一致\tabularnewline
+技术 & 采用黑盒测试、边界测试、等价类划分测试方法\tabularnewline
+工具与方法 & 手工测试\tabularnewline
+开始标准 & 开发阶段对应的功能完成并且测试用例设计完成\tabularnewline
+完成标准 & 测试用例通过并且高级缺陷全部解决\tabularnewline
+测试范围 &
+验证数据精确度、数据类型、业务功能等相关方面的正确性\tabularnewline
+\bottomrule
+\end{longtable}
+
+
+\subsection{用户界面测试}
+
+  测试用户界面是否具有导航性、美观性、规范性、是否满足设计中客户要求的执行功能、详细介绍如下边UI测试：
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+测试范围 &
+保证窗口运行、提示信息、页面跳转、易于使用等方面的正确性\tabularnewline
+测试目标 &
+核实各个窗口的风格（包括颜色、字体、提示信息、图标、title等）均与需求保持一致，或符合可接受标准，能够保证用户界面的友好性、易操作性、且符合用户操作习惯\tabularnewline
+技术 & Web 测试通用方法\tabularnewline
+工具与方法 & 手工测试、目测\tabularnewline
+开始标准 & 界面开发完成\tabularnewline
+完成标准 & UI
+符合可接受标准，能保证用户界面的友好性，易操作性，而且符合用户操作习惯\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{性能测试}
+
+  测试相应时间、事务处理效率和其他时间敏感的问题。介绍如下表:
+
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+测试范围 & 多用户长时间在线操作时性能方面的测试\tabularnewline
+测试目标 &
+核实系统在大流量的数据与多用户操作时软件性能的稳定性，不造成系统崩溃或者相关\tabularnewline
+技术 & 手动测试、自动化测试\tabularnewline
+开始标准 & 系统测试\tabularnewline
+完成标准 & 系统满足用户需求的性能要求\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{兼容性测试}
+
+  测试软件在不同平台上的使用的兼容性。介绍如下：
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+测试范围 & \vtop{\hbox{\strut 1.
+使用不同版本的浏览器、分辨率、操作系统分别进行测试}\hbox{\strut 2.不同操作系统、不同设备、浏览器、分辨率等各种条件的组合测试}}\tabularnewline
+测试目标 & 核实系统在不同软件和硬件配置中运行稳定\tabularnewline
+技术 & 黑盒测试\tabularnewline
+& 手工测试\tabularnewline
+开始标准 & 系统测试\tabularnewline
+完成标准 &
+在各种不同版本不同类型浏览器、操作系统或者其组合下均能正常实现其功能(测试根据开发提供的依据决定测试的范围）\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{安全性测试}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+测试范围 & 用户、管理员的密码安全、权限\tabularnewline
+测试目标 &
+用户、管理员密码管理、应用程序级别的安全性、核实用户只能操作其所有权限操作的功能；系统级别的安全性\tabularnewline
+技术 & 黑盒测试\tabularnewline
+工具与方法 & 手工测试\tabularnewline
+开始标准 & 系统测试\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{配置测试}
+
+  测试在不同网络、服务器、工作站的不同软硬件配置条件下，软件系统的质量，详细说明见下表：
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+测试范围 & 不同网络、服务器、不同软硬件配置条件\tabularnewline
+测试目标 &
+核实系统在不同的软硬件配置条件下系统的质量是否达到标准\tabularnewline
+技术 & 黑盒测试\tabularnewline
+工具与方法 & 手工测试\tabularnewline
+开始标准 & 系统开发完成后\tabularnewline
+完成标准 & 达到相关要求\tabularnewline
+测试重点与优先级 & 测试优先级以测试需求优先级为参照\tabularnewline
+需考虑的特殊事项 & 软硬件设备问题\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{回归测试}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+测试范围 & 所有功能、用户界面、兼容性、安全性等测试类型\tabularnewline
+测试目标 &
+核实执行所有测试类型后功能、性能、等均达到用户需求所要求的标准\tabularnewline
+技术 & 黑盒测试\tabularnewline
+工具与方法 & 手工测试 、 自动化测试\tabularnewline
+开始标准 &
+每当被测试的软件或其开发环境改变时，在每个核实的测试阶段上进行回归测试\tabularnewline
+完成标准 & 95\% 的测试用例执行通过并通过系统测试\tabularnewline
+测试重点与优先级 & 测试优先级以测试需求的优先级为参照\tabularnewline
+需考虑的特殊事项 & 软硬件设备问题\tabularnewline
+\bottomrule
+\end{longtable}
+
+\section{测试结果}
+
+\subsection{测试中存在的问题}
+
+\subsubsection{AI咨询功能在前端显示时会出现无返回结果的问题}
+
+\subsubsection{修改头像约有10\%的数据传不到数据库}
+
+
+\subsection{项目评价}
+
+
+  在测试的过程中，测试团队并没有发现较大的bug，所述功能均可以基本实现，包括用户注册、登录以及基本的点餐流程、修改个人资料等功能。并且网页前端设计简洁清晰，对用户的引导性强，同时兼具了一定的美观性考量。
+\section{测试用例}

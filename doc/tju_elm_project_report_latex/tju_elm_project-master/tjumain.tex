@@ -1,0 +1,55 @@
+% !Mode:: "TeX:UTF-8"
+
+\def\usewhat{pdflatex}                               % 定义编译方式 dvipdfmx 或者 pdflatex，默认为 dvipdfmx
+                                                     % 方式编译，如果需要修改，只需改变花括号中的内容即可。
+\documentclass[12pt,openany,oneside,ctexartutf8]{book}
+                                                     % 本科生毕业论文通常采用单页排版
+\input{setup/package}                                % 定义本文所使用宏包
+\graphicspath{{figures/}}                            % 定义所有的 .eps 文件在 figures 子目录下
+\begin{document}                                     % 开始全文
+\begin{CJK*}{UTF8}{song}                             % 开始中文字体使用
+	\input{setup/format}                             % 完成对论文各个部分格式的设置
+	\input{setup/info}
+	\frontmatter                                     % 以下是论文导言部分，包括论文的封面，中英文摘要和中文目录
+	\fancypagestyle{plain}{							 % 正文前均无页眉
+		\fancyhf{}
+		\renewcommand{\headrulewidth}{0 pt}
+		\fancyfoot[C]{\song\xiaowu~\thepage~}
+	}
+
+	\makecover 			% 封面
+
+	\include{setup/toc} % 目录
+
+	\mainmatter\defaultfont\sloppy\raggedbottom
+	\makeatletter
+	\fancypagestyle{plain}{                              % 设置正文眉页脚风格
+		\fancyhf{}
+		\fancyhead[C]{\song\wuhao \@cheading}            % 页眉格式
+		\fancyfoot[C]{\song\xiaowu ~\thepage~}           % 页脚格式
+		\renewcommand{\headrulewidth}{0.5pt}
+		\renewcommand{\footrulewidth}{0pt}
+	}
+	\makeatother
+	\setcounter{page}{1}                                 % 单独从 1 开始编页码
+	\titleformat{\chapter}{\centering\xiaosan\hei}{\chaptername}{2em}{} % 恢复chapter标题格式要求
+
+	%%%%%% 这里是正文，每个文件对应正文中的一章 %%%%%%
+
+	\include{body/instruction}
+	\include{body/devise}
+	\include{body/test}
+	\include{body/deploy}
+	\include{body/divisionOfLabor}
+	\include{body/process}
+	\include{body/characteristic}
+	\include{body/summarize}
+	\include{body/summary}
+
+	
+	% \include{body/background}
+	% \include{body/process}
+	% \include{body/achievement}
+
+\end{CJK*}                                     % 结束中文字体使用
+\end{document}                                 % 结束全文
