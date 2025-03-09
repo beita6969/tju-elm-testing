@@ -13,9 +13,10 @@ sudo curl -fsSL -o ~/deploy.sh https://www.yangyuxin.cn/elm/boot/deploy.sh && su
 ### 在一台新的linux机器上执行一键部署命令(这里推荐使用非大陆服务器，访问DOCKER更快。如果是大陆服务器访问DOCKER，运行我的一键部署脚本会自动配置加速镜像，但访问速度仍稍慢些)
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="assets/Snipaste_2025-03-09_22-14-05.png" alt="TJU-ELM" style="width: 48%; max-height: 550px;">
-  <img src="assets/Snipaste_2025-03-09_19-06-32.png" alt="TJU-ELM" style="width: 48%; max-height: 550px;">
+  <img src="assets/Snipaste_2025-03-09_22-14-05.png" alt="TJU-ELM" style="width: 48%; height: 550px;">
+  <img src="assets/Snipaste_2025-03-09_19-06-32.png" alt="TJU-ELM" style="width: 48%; height: 550px;">
 </div>
+
 
 
 
