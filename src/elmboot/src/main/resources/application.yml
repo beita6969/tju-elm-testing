@@ -1,7 +1,7 @@
 server:
   port: 8080    #端口（默认也是8080）
   servlet:
-    context-path: /elm       #请求路径的前缀（让前端的请求路径在ip和端口后加一个工程名elm）
+    context-path: /
 
 logging:
   level:
@@ -17,6 +17,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/elm?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false
+#    url: jdbc:mysql://localhost:3306/elm?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false
     username: root
     password: 123456
 
@@ -26,23 +27,3 @@ mybatis:
   type-aliases-package: com.neusoft.elmboot.po      #扫描整个po包，给实体类设置别名
   configuration:
     map-underscore-to-camel-case: true
-
-# 配置sql注入关键字
-sql:
-  keywords: ;|'|"|\|--|_|\*|%|#|//|\+|=|or|and|like|select|insert|update|delete|alert|drop|truncate|declare|exec|execute|create|xp_|sp_|0x
-
-  
-#文心一言
-wenxincontroller:
-  #client_id
-  api: 
-   key: LzHLae3ch9isirMsCDnfO4gV
-  #client_secret
-  secret:
-   key: qEaqABpUPU4bQX2tuXK6efOeATaxA0jP
-  #access_token接口
-  token:
-   url: https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=LzHLae3ch9isirMsCDnfO4gV&client_secret=qEaqABpUPU4bQX2tuXK6efOeATaxA0jP
-  #文心服务器接口
-  chat: 
-   url: https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie-tiny-8k?access_token=24.08aba675976071475000f485a9c42823.2592000.1728275676.282335-114752595

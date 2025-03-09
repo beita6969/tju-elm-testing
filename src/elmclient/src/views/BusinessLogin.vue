@@ -40,12 +40,11 @@
   <script>
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
-  import axios from 'axios'; // 假设axios是从这里导入的
-  import qs from 'qs'; // 假设qs是从这里导入的
-  import Footer from '../components/Footer.vue';
-  
+  import axios from 'axios';
+  import qs from 'qs';
+
   export default {
-	name: 'Login',
+	name: 'BusinessLogin',
 	setup() {
 	  const userId = ref('');
 	  const password = ref('');
@@ -53,8 +52,9 @@
 	  const businessId = ref('');
 
 	  const setSessionStorage = (key, value) => {
-      window.sessionStorage.setItem(key, JSON.stringify(value)); // 自定义会话存储函数
-    };
+		window.sessionStorage.setItem(key, JSON.stringify(value));
+	  };
+
 	  const login = async () => {
 		if (userId.value === '') {
 		  alert('手机号码不能为空！');
@@ -67,40 +67,75 @@
 		console.log(userId.value);
 		await axios.post('BusinessController/getBusinessIdByPhoneNumber', {
 		  phoneNumber: userId.value
-			}).then(response => {
-				businessId.value = response.data;
-
+		}).then(response => {
+		  businessId.value = response.data;
 		});
+		
 		// 登录请求
 		await axios.post('BusinessController/getBusinessByIdByPass', {
 		  userId: userId.value,
 		  password: password.value
-		}).then(response => {
+		}).then(async response => {
 		  const user = response.data;
-		  if (user===0) {
+		  if (user === 0) {
 			alert('用户名或密码不正确！');
 		  } else {
-			console.log(businessId.value)
-			router.push({ path: '/businessView' , query: { businessId: businessId.value } });
+			// 检查商家信息是否已完善
+			const businessInfoResponse = await axios.post('BusinessController/getBusinessById', {
+				businessId: businessId.value
+			});
+			
+			const businessInfo = businessInfoResponse.data;
+			const infoCompleted = !!(businessInfo && businessInfo.businessName && 
+				businessInfo.businessAddress && businessInfo.businessExplain && 
+				businessInfo.businessImg && businessInfo.startPrice !== null && 
+				businessInfo.deliveryPrice !== null && businessInfo.orderTypeId);
+
+			// 设置商家登录标识
+			setSessionStorage('businessUser', { 
+			  userId: userId.value,
+			  businessId: businessId.value,
+			  isBusiness: true,
+			  infoCompleted: infoCompleted,
+			  isNewRegistered: false
+			});
+			
+			if (!infoCompleted) {
+				if (confirm('检测到您的商家信息尚未完善，是否现在完善？\n完善信息后才能使用商家功能。')) {
+					router.push({ 
+						path: '/businessInformation', 
+						query: { businessId: businessId.value } 
+					});
+				} else {
+					alert('您可以稍后在商家主页中完善信息。');
+					router.push({ 
+						path: '/businessView', 
+						query: { businessId: businessId.value } 
+					});
+				}
+			} else {
+				router.push({ 
+					path: '/businessView', 
+					query: { businessId: businessId.value } 
+				});
+			}
 		  }
 		}).catch(error => {
 		  console.error(error);
+		  alert('登录失败，请稍后重试！');
 		});
 	  };
-  
+
 	  const register = () => {
 		router.push({ path: 'businessRegister' });
 	  };
-  
+
 	  return {
 		userId,
 		password,
 		login,
 		register
 	  };
-	},
-	components: {
-	  Footer
 	}
   }
   </script>

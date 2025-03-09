@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.util.DigestUtils;
 
 import com.neusoft.elmboot.mapper.UserMapper;
 import com.neusoft.elmboot.po.User;
@@ -54,25 +55,30 @@ public class UserServiceImpl implements UserService {
  @Override
  @Transactional
  public int changeUserAvatar(UserAvatar userAvatar) {
-//     System.out.println(base64);
-//     System.out.println(userId);
-//     String base64Encoder = java.util.Base64.UrlToBase64.imageChangeBase64(base64);
-//     System.out.println(base64Encoder);
-//        byte[] buffer = null;
-//        try {
-//            buffer = file.getBytes();
-//            base64Encoder = Base64.encodeBase64String(buffer);
-//            // 防止Base64编码中含有换行符，统一全部替换掉
-//            base64Encoder = base64Encoder.replaceAll("[\\s*\t\n\r]", "");
-//            // 添加前端读取需要的前缀
-//            base64Encoder = "data:image/png;base64," + base64Encoder;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//  
-  return userMapper.changeUserAvatar(userAvatar);
+  try {
+    // 基本参数验证
+    if (userAvatar == null || userAvatar.getUserId() == null || userAvatar.getUserImg() == null) {
+      return 0;
+    }
 
+    // 验证base64格式
+    String base64Image = userAvatar.getUserImg();
+    if (!base64Image.contains("base64,")) {
+      return 0;
+    }
+
+    // 验证图片大小（解码后不超过10MB）
+    String base64Data = base64Image.substring(base64Image.indexOf(",") + 1);
+    byte[] imageBytes = java.util.Base64.getDecoder().decode(base64Data);
+    if (imageBytes.length > 10 * 1024 * 1024) { // 增加到10MB
+      return 0;
+    }
+
+    return userMapper.changeUserAvatar(userAvatar);
+  } catch (Exception e) {
+    e.printStackTrace();
+    return 0;
+  }
  }
  
  @Override
@@ -85,5 +91,42 @@ public class UserServiceImpl implements UserService {
 	  return userMapper.userIdExists(user);
 	 }
  
- 
+ @Override
+ public User createUser(String username, String password, String phone) {
+     User user = new User();
+     user.setUserName(username);
+     user.setPassword(password);
+     user.setDelTag(1);
+     
+     userMapper.saveUser(user);
+     return user;
+ }
+
+
+ @Override
+ public boolean register(User user) {
+     // 检查用户是否已存在
+     if (checkUserIdExists(user.getUserId())) {
+         return false;
+     }
+     
+     // 密码加密（使用MD5）
+     user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
+     // 设置默认值
+     user.setDelTag(1);  // 1表示有效用户
+     
+     return userMapper.saveUser(user) > 0;
+ }
+
+ @Override
+ public User login(String userId, String password) {
+     // 将密码进行MD5加密后比对
+     String encryptedPassword = DigestUtils.md5DigestAsHex(password.getBytes());
+     return userMapper.getUserByIdAndPassword(userId, encryptedPassword);
+ }
+
+ @Override
+ public boolean checkUserIdExists(String userId) {
+     return userMapper.getUserById(userId) != null;
+ }
 }

@@ -6,13 +6,16 @@
       </div>
       <div class="content">
         <div class="avatar_name">用户头像</div>
-        <div class="avatar">
-          <img :src="user2.userImg" alt="用户头像" />
+        <div class="avatar" @click="showUpload">
+          <img :src="user2?.userImg || user?.userImg" alt="点击更换头像" />
+          <div class="avatar-overlay">
+            <span>点击更换头像</span>
+          </div>
         </div>
         <div class="details">
-          <p class="nickname">昵称: {{ user.userName }}</p>
-          <p class="phone">电话: {{ user.userId }}</p>
-          <p class="gender">性别: {{ user.userSex === 1 ? '男' : '女' }}</p>
+          <p class="nickname">昵称: {{ user?.userName }}</p>
+          <p class="phone">电话: {{ user?.userId }}</p>
+          <p class="gender">性别: {{ user?.userSex === 1 ? '男' : '女' }}</p>
         </div>
         <div class="actions">
           <button @click="editNickname">修改昵称</button>
@@ -28,9 +31,7 @@
             </div>
             <button @click="submitPassword">提交</button>
           </div>
-          <button @click="showUpload">修改头像</button>
           <input type="file" ref="fileInput" @change="uploadAvatar" accept="image/*" style="display:none;" />
-          <button @click="submitAvatar" v-if="avatarFile">提交头像</button>
           <button @click="logout">退出登录</button>
           <button @click="myfavorite">收藏列表</button>
         </div>
@@ -45,6 +46,7 @@ import { ref, onMounted, onBeforeMount } from 'vue';
 import Footer from '../components/Footer.vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { toast } from '../utils/toast';
 
 export default {
   name: 'MyInformation',
@@ -57,70 +59,112 @@ export default {
     const showEditPassword = ref(false);
     const newPassword = ref('');
     const oldPassword = ref('');
-    const avatarFile = ref(null);
     const fileInput = ref(null);
 
     const showUpload = () => {
-      fileInput.value.click(); // 触发文件输入框点击事件
+      fileInput.value.click();
     };
 
-    const uploadAvatar = (event) => {
+    const uploadAvatar = async (event) => {
       const file = event.target.files[0];
       if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const base64 = e.target.result;
-          avatarFile.value = base64;
-          // 可选：用于调试
-        };
-        reader.readAsDataURL(file);
- 
+        console.log('选择的文件:', file);
+        console.log('文件类型:', file.type);
+        console.log('文件大小:', file.size);
+
+        // 放宽文件类型限制，只要是图片就可以
+        if (!file.type.includes('image')) {
+          toast.warning('请选择图片文件！');
+          event.target.value = '';
+          return;
+        }
+        // 放宽文件大小限制到10MB
+        if (file.size > 10 * 1024 * 1024) {
+          toast.warning('图片大小不能超过10MB！');
+          event.target.value = '';
+          return;
+        }
+
+        try {
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            const base64String = e.target.result;
+            console.log('图片转base64长度:', base64String.length);
+
+            try {
+              console.log('准备发送的数据:', {
+                userId: user.value.userId,
+                userImg: base64String.substring(0, 100) + '...' // 只打印开头部分避免日志过长
+              });
+
+              const response = await axios.post('UserController/changeUserAvatar', {
+                userId: user.value.userId,
+                userImg: base64String
+              });
+
+              console.log('服务器响应:', response);
+
+              if (response.data.code === 1) {
+                // 更新头像显示
+                user.value.userImg = base64String;
+                if (user2.value) {
+                  user2.value.userImg = base64String;
+                }
+                // 更新sessionStorage中的用户信息
+                sessionStorage.setItem('user', JSON.stringify(user.value));
+                toast.success('头像修改成功！');
+              } else {
+                console.error('服务器返回错误:', response.data);
+                toast.error(response.data.msg || '头像修改失败，请重试！');
+              }
+            } catch (error) {
+              console.error('修改头像请求失败:', error);
+              console.error('错误详情:', error.response?.data || error.message);
+              toast.error('头像上传失败，请重试！');
+            }
+          };
+
+          reader.onerror = (error) => {
+            console.error('文件读取错误:', error);
+            toast.error('读取文件失败，请重试！');
+          };
+
+          reader.readAsDataURL(file);
+        } catch (error) {
+          console.error('文件处理错误:', error);
+          toast.error('处理文件失败，请重试！');
+        }
       }
+      // 清空文件输入框，允许选择相同的文件
+      event.target.value = '';
     };
 
-    const submitAvatar = async () => {
-      if (!avatarFile.value) {
-        alert('请先选择头像文件！');
+    onBeforeMount(async () => {
+      user.value = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null;
+      if (!user.value) {
+        toast.warning('用户未登录，请先登录！');
+        router.push({ path: '/login' });
         return;
       }
 
-
-    console.log(avatarFile.value);
-      await axios.post('UserController/changeUserAvatar', {
-          userId: user.value.userId,
-          base64: avatarFile
-        })
-        .then((response) => {
-          user2.value.userImg = avatarFile.value; // 更新头像URL
-
-          alert('头像修改成功！');
-          avatarFile.value = null; // 重置文件输入
-        })
-        .catch((error) => {
-          console.error(error);
-          alert('头像修改失败！');
-        });
-    };
-
-    onBeforeMount(() => {
-      user.value = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null;
-      user2.value = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null;
-      if (!user.value) {
-        alert('用户未登录，请先登录！');
-        router.push({ path: '/login' });
-      }
-
-      axios
-        .post('UserController/getUserByIdByPass', {
+      try {
+        const response = await axios.post('UserController/getUserByIdByPass', {
           userId: user.value.userId,
           password: user.value.password,
-        })
-        .then((response) => {
-          user2.value = response.data;
-        })
-        .catch((error) => {
-          console.error(error);
         });
+        
+        if (response.data) {
+          user2.value = response.data;
+          // 如果返回的用户数据中有新的头像URL，更新本地状态
+          if (response.data.userImg) {
+            user.value.userImg = response.data.userImg;
+            sessionStorage.setItem('user', JSON.stringify(user.value));
+          }
+        }
+      } catch (error) {
+        console.error('获取用户信息失败:', error);
+        toast.error('获取用户信息失败，请重试！');
+      }
     });
 
     const logout = () => {
@@ -134,11 +178,11 @@ export default {
 
     const submitNickname = () => {
       if (newNickname.value.trim() === '') {
-        alert('昵称不能为空！');
+        toast.warning('昵称不能为空！');
         return;
       }
       if (newNickname.value.length > 8) {
-        alert('昵称不能超过8个字符！');
+        toast.warning('昵称不能超过8个字符！');
         return;
       }
       axios
@@ -147,15 +191,19 @@ export default {
           userName: newNickname.value,
         })
         .then((response) => {
-          user.value.userName = newNickname.value;
-          sessionStorage.setItem('user', JSON.stringify(user.value));
-          alert('昵称修改成功！');
-          showEditNickname.value = false;
-          newNickname.value = '';
+          if (response.data === 1) {
+            user.value.userName = newNickname.value;
+            sessionStorage.setItem('user', JSON.stringify(user.value));
+            toast.success('昵称修改成功！');
+            showEditNickname.value = false;
+            newNickname.value = '';
+          } else {
+            toast.error('昵称修改失败！');
+          }
         })
         .catch((error) => {
           console.error(error);
-          alert('昵称修改失败！');
+          toast.error('昵称修改失败！');
         });
     };
 
@@ -165,11 +213,11 @@ export default {
 
     const submitPassword = () => {
       if (oldPassword.value.trim() === '') {
-        alert('旧密码不能为空！');
+        toast.warning('旧密码不能为空！');
         return;
       }
       if (newPassword.value.trim() === '') {
-        alert('新密码不能为空！');
+        toast.warning('新密码不能为空！');
         return;
       }
 
@@ -180,19 +228,25 @@ export default {
           newPassword: newPassword.value,
         })
         .then((response) => {
-          alert('密码修改成功！');
-          showEditPassword.value = false;
-          oldPassword.value = '';
-          newPassword.value = '';
+          if (response.data === 1) {
+            toast.success('密码修改成功！');
+            showEditPassword.value = false;
+            oldPassword.value = '';
+            newPassword.value = '';
+          } else {
+            toast.error('密码修改失败！');
+          }
         })
         .catch((error) => {
           console.error(error);
-          alert('密码修改失败！');
+          toast.error('密码修改失败！');
         });
     };
+
     const myfavorite = () => {
       router.push({ path: '/myfavorite' });
     };
+
     return {
       user,
       user2,
@@ -208,8 +262,6 @@ export default {
       oldPassword,
       showUpload,
       uploadAvatar,
-      submitAvatar,
-      avatarFile,
       fileInput,
       myfavorite
     };
@@ -262,12 +314,51 @@ export default {
   margin: 3vw;
 }
 
-.wrapper .my-information .avatar img {
+.wrapper .my-information .avatar {
+  position: relative;
+  cursor: pointer;
   width: 25vw;
-  /* 增加头像尺寸 */
   height: 25vw;
-  border-radius: 50%;
   margin: 5vw;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.wrapper .my-information .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: filter 0.3s ease;
+}
+
+.wrapper .my-information .avatar:hover img {
+  filter: brightness(70%);
+}
+
+.wrapper .my-information .avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 50%;
+}
+
+.wrapper .my-information .avatar:hover .avatar-overlay {
+  opacity: 1;
+}
+
+.wrapper .my-information .avatar-overlay span {
+  font-size: 3vw;
+  text-align: center;
 }
 
 .wrapper .my-information .content {

@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.neusoft.elmboot.po.DeliveryAddress;
 import com.neusoft.elmboot.service.DeliveryAddressService;
 
-import jakarta.validation.Valid;
-
 @RestController
 @RequestMapping("/DeliveryAddressController")
 public class DeliveryAddressController {

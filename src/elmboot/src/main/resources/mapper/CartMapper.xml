@@ -29,8 +29,11 @@ column="businessId"/>
  <delete id="removeCart" parameterType="Cart">
  delete from cart 
  <where>
- userId=#{userId} and businessId=#{businessId}
- <if test="foodId!=null and foodId!=''">
+ userId=#{userId}
+ <if test="businessId!=null">
+ and businessId=#{businessId}
+ </if>
+ <if test="foodId!=null">
  and foodId=#{foodId}
  </if>
  </where>

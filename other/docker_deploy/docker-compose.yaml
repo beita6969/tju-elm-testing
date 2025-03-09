@@ -1,0 +1,34 @@
+name: springboot-elm
+services: 
+ mysql:
+  container_name: elmboot-mysql
+  image: mysql:latest
+  ports:
+   - "11000:3306"
+  environment: 
+   - MYSQL_ROOT_PASSWORD=123456
+   - MYSQL_DATABASE=elm
+  volumes:
+   - mysql-data:/var/lib/mysql
+   - /app/myconf:/etc/mysql/conf.d
+  restart: always
+  networks:
+   - elmboot
+ tju-springboot-elm:
+  container_name: elmboot-app
+  image: jhm2004/tju-springboot-elm:latest
+  ports:
+   - "10000:8080"
+  environment:
+   - VITE_API_BASE_URL=http://${VM_IP}:10000/
+  restart: always
+  networks:
+   - elmboot
+  depends_on:
+   - mysql
+
+volumes:
+ mysql-data:
+
+networks:
+ elmboot:

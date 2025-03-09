@@ -1,13 +1,10 @@
 package com.neusoft.elmboot.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.neusoft.elmboot.intercept.SqlInjectInterceptor;
-import jakarta.annotation.Resource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,14 +21,13 @@ import java.io.IOException;
 @EnableTransactionManagement
 @MapperScan("com.neusoft.elmboot.mapper")
 public class MyBatisConfig implements TransactionManagementConfigurer {
-    @Resource
-    SqlInjectInterceptor sqlInjectInterceptor;
 
     @Bean
     public DataSource dataSource() {
         return DataSourceBuilder.create()
                 .driverClassName("com.mysql.cj.jdbc.Driver")
                 .type(DruidDataSource.class)
+//                .url("jdbc:mysql://elmboot-mysql:3306/elm?useSSL=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true")
                 .url("jdbc:mysql://localhost:3306/elm?useSSL=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true")
                 .username("root")
                 .password("123456").build();
@@ -49,7 +45,7 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
         sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:mapper/*.xml"));
         sqlSessionFactoryBean.setTypeAliasesPackage("com.neusoft.elmboot.po");
         //添加拦截器
-        sqlSessionFactoryBean.setPlugins(sqlInjectInterceptor);
+//        sqlSessionFactoryBean.setPlugins(sqlInjectInterceptor);
         return sqlSessionFactoryBean;
 
     }

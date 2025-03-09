@@ -13,12 +13,13 @@ public class WebMvcConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        //前端可以通过allowedOrigins进行跨域访问，如："http://localhost:8081"写法
                         .allowedOrigins("*")
-//                        .allowCredentials(true)
-                        .allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH")
-                        .allowedHeaders("*")
-                        .maxAge(36000);
+                        .allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS")
+                        .allowedHeaders("Origin", "Content-Type", "Accept", "Authorization", 
+                                      "X-Requested-With", "Access-Control-Request-Method",
+                                      "Access-Control-Request-Headers")
+                        .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
+                        .maxAge(3600);
             }
         };
     }

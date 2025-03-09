@@ -21,10 +21,21 @@ export default {
 	setup() {
     const route = useRoute();
 
-    // 根据当前路径决定是否显示 footer
+    // 根据当前路径和用户类型决定是否显示 footer
     const showFooter = computed(() => {
-		return !['BusinessInfo', 'Payment', 'SuccessfulPayment','Orders','Cart'].includes(route.name);
-	});
+      // 检查是否是商家用户
+      const businessUser = sessionStorage.getItem('businessUser') ? JSON.parse(sessionStorage.getItem('businessUser')) : null;
+      const businessPaths = ['/businessView', '/businessInformation', '/submitItems', '/businessLogin', '/businessRegister'];
+      
+      // 如果是商家页面，不显示 footer
+      if (businessPaths.includes(route.path)) {
+        return false;
+      }
+      
+      // 对于普通用户，在特定页面不显示 footer
+      return !['BusinessInfo', 'Payment', 'SuccessfulPayment', 'Orders', 'Cart'].includes(route.name);
+    });
+    
     return { showFooter };
   },
 };

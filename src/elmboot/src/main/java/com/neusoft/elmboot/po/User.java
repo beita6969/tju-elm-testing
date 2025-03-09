@@ -1,7 +1,5 @@
 package com.neusoft.elmboot.po;
 
-import jakarta.validation.constraints.NotNull;
-
 public class User {
 
 	private String userId;

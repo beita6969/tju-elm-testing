@@ -1,6 +1,7 @@
 package com.neusoft.elmboot.service.impl;
 
 import java.util.*;
+import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import com.neusoft.elmboot.mapper.FoodMapper;
 import com.neusoft.elmboot.mapper.OrderDetailetMapper;
 import com.neusoft.elmboot.mapper.OrdersMapper;
 import com.neusoft.elmboot.po.Cart;
+import com.neusoft.elmboot.po.Food;
 import com.neusoft.elmboot.po.OrderDetailet;
 import com.neusoft.elmboot.po.Orders;
 import com.neusoft.elmboot.service.OrdersService;
@@ -28,47 +30,71 @@ public class OrdersServiceImpl implements OrdersService {
  private FoodMapper foodMapper;
  
  @Override
- @Transactional
+ @Transactional(rollbackFor = Exception.class)
  public int createOrders(Orders orders) {
-  //1、查询当前用户购物车中当前商家的所有食品
-  Cart cart = new Cart();
-  cart.setUserId(orders.getUserId());
-  cart.setBusinessId(orders.getBusinessId());
-  
-  List<Cart> cartList = cartMapper.listCart(cart);
-  //2、创建订单（返回生成的订单编号）
+  try {
+    //1、查询当前用户购物车中当前商家的所有食品
+    Cart cart = new Cart();
+    cart.setUserId(orders.getUserId());
+    cart.setBusinessId(orders.getBusinessId());
+    
+    List<Cart> cartList = cartMapper.listCart(cart);
+    if (cartList == null || cartList.isEmpty()) {
+        throw new RuntimeException("购物车为空，无法创建订单");
+    }
 
-  orders.setOrderDate(CommonUtil.getCurrentDate1());
-  ordersMapper.saveOrders(orders);
-  int orderId = orders.getOrderId();
+    //2、创建订单
+    orders.setOrderDate(CommonUtil.getCurrentDate1());
+    // 确保orderTotal是BigDecimal类型
+    if (orders.getOrderTotal() == null) {
+        orders.setOrderTotal(BigDecimal.ZERO);
+    }
+    // 设置初始订单状态为0（未支付）
+    orders.setOrderState(0);
+    
+    int result = ordersMapper.saveOrders(orders);
+    if (result <= 0) {
+        throw new RuntimeException("创建订单失败");
+    }
+    int orderId = orders.getOrderId();
 
-  //3、批量添加订单明细
-  List<OrderDetailet> list = new ArrayList<>();
-  for (Cart c : cartList) {
-	  
-   OrderDetailet od = new OrderDetailet();
+    //3、批量添加订单明细
+    List<OrderDetailet> list = new ArrayList<>();
+    for (Cart c : cartList) {
+        OrderDetailet od = new OrderDetailet();
+        od.setOrderId(orderId);
+        od.setFoodId(c.getFoodId());
+        od.setQuantity(c.getQuantity());
+        
+        // 获取食品信息
+        Food food = foodMapper.getFoodById(c.getFoodId());
+        if (food == null) {
+            throw new RuntimeException("食品信息不存在，foodId: " + c.getFoodId());
+        }
+        
+        od.setFood(food);
+        od.setPriceAtThatTime(food.getFoodPrice());
+        od.setFoodName(food.getFoodName());
+        list.add(od);
+    }
+    
+    if (!list.isEmpty()) {
+        int detailResult = orderDetailetMapper.saveOrderDetailetBatch(list);
+        if (detailResult <= 0) {
+            throw new RuntimeException("保存订单明细失败");
+        }
+    }
 
-   od.setFood(foodMapper.getFoodById(c.getFoodId()));
-   od.setPriceAtThatTime((foodMapper.getFoodById(c.getFoodId())).getFoodPrice());
-   //c有foodId
-   od.setFoodName((foodMapper.getFoodById(c.getFoodId())).getFoodName());
-   od.setOrderId(orderId);
-   od.setFoodId(c.getFoodId());
-   od.setQuantity(c.getQuantity());
+    //4、从购物车表中删除相关食品信息
+    int removeResult = cartMapper.removeCart(cart);
+    if (removeResult <= 0) {
+        throw new RuntimeException("清空购物车失败");
+    }
 
-   list.add(od);
+    return orderId;
+  } catch (Exception e) {
+    throw new RuntimeException("创建订单失败: " + e.getMessage(), e);
   }
-  
-  //判空是非常重要的一个步骤！！！
-  if(list  != null && list.size() >0) {
-  orderDetailetMapper.saveOrderDetailetBatch(list);
-  }
-
-  //4、从购物车表中删除相关食品信息
-  if(cart !=null)
-  cartMapper.removeCart(cart);
-
-  return orderId;
  }
 
  @Override

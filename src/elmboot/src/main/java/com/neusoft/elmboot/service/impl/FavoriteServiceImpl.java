@@ -29,4 +29,9 @@ public class FavoriteServiceImpl implements FavoriteService{
 	public int removeFavoriteBusinessId(Favorite favorite) {
 		return favoriteMapper.removeFavoriteBusinessId(favorite);
 	}
+	
+	@Override
+	public int getFavoriteCountByBusinessId(Favorite favorite) {
+		return favoriteMapper.getFavoriteCountByBusinessId(favorite);
+	}
 }

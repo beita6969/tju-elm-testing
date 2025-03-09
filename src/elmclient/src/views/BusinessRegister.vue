@@ -65,48 +65,100 @@ export default {
 		const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 		const businessId = ref(null); // 商家id
 		const exist = ref(false); // 用于判断手机号是否已存在
-		const checkUserId = () => {
-			axios.post('BusinessController/checkBusiness', {
-				phoneNumber: user.userId,
-			}).then(response => {
-				console.log(response.data);
-				if (response.data == 1) {
+		const checkUserId = async () => {
+			try {
+				if (!user.userId) return;
+				
+				const response = await axios.post('BusinessController/checkBusiness', {
+					phoneNumber: user.userId
+				});
+				
+				if (response.data === 1) {
+					exist.value = true;
 					user.userId = '';
-					alert('此手机号码注册的商家已存在！');
+					alert('此手机号码已注册！');
+				} else {
+					exist.value = false;
 				}
-			}).catch(error => {
-				console.error(error);
-			});
+			} catch (error) {
+				console.error('检查手机号时发生错误:', error);
+				alert('验证手机号失败，请稍后重试！');
+			}
 		};
 	
-		const register = async() => {
-			if (!reg.test(user.userId)) {
-				alert('手机号码格式错误，请重新输入！');
-				return;
-			}
-			if (!regex.test(user.password)) {
-				alert('密码格式错误，请确保包含至少一个大写字母、一个小写字母和一个数字，长度至少为8个字符。');
-				return;
-			}
-			if (user.password != confirmPassword.value) {
-				alert('两次输入的密码不一致！');
-				return;
-			}
-			
-			
-			// 注册请求
-			await axios.post('BusinessController/saveBusiness', {password:user.password,phoneNumber:user.userId})
-				.then(response => {
-					console.log(response.data);
-					if (response.data > 0) {
-						alert('审核成功！');
-						router.push({path: '/businessInformation', query: { businessId: response.data }});
-					} else {
-						alert('审核失败！');
-					}
-				}).catch(error => {
-					console.error(error);
+		const register = async () => {
+			try {
+				if (user.userId === '') {
+					alert('手机号码不能为空！');
+					return;
+				}
+				if (!reg.test(user.userId)) {
+					alert('手机号码格式不正确！');
+					return;
+				}
+				if (user.password === '') {
+					alert('密码不能为空！');
+					return;
+				}
+				if (!regex.test(user.password)) {
+					alert('密码必须包含大小写字母和数字，且长度不少于8位！');
+					return;
+				}
+				if (confirmPassword.value === '') {
+					alert('请确认密码！');
+					return;
+				}
+				if (user.password !== confirmPassword.value) {
+					alert('两次输入的密码不一致！');
+					return;
+				}
+
+				// 检查手机号是否已存在
+				const checkResponse = await axios.post('BusinessController/checkBusiness', {
+					phoneNumber: user.userId
 				});
+				
+				if (checkResponse.data === 1) {
+					alert('此手机号码已注册！');
+					return;
+				}
+
+				// 注册请求
+				const response = await axios.post('BusinessController/saveBusiness', {
+					phoneNumber: user.userId,
+					password: user.password
+				});
+
+				if (response.data > 0) {
+					// 获取商家ID
+					const businessIdResponse = await axios.post('BusinessController/getBusinessIdByPhoneNumber', {
+						phoneNumber: user.userId
+					});
+					
+					const businessId = businessIdResponse.data;
+					
+					alert('注册成功！请完善商家信息。');
+					// 设置商家登录状态
+					sessionStorage.setItem('businessUser', JSON.stringify({
+						userId: user.userId,
+						businessId: businessId,
+						isBusiness: true,
+						infoCompleted: false,
+						isNewRegistered: true
+					}));
+					
+					// 跳转到完善信息页面
+					router.push({
+						path: '/businessInformation',
+						query: { businessId: businessId }
+					});
+				} else {
+					alert('注册失败，请重试！');
+				}
+			} catch (error) {
+				console.error('注册失败:', error);
+				alert('注册失败，请稍后重试！');
+			}
 		};
 
 

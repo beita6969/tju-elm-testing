@@ -4,35 +4,57 @@
         <header>
             <p>商家信息</p>
         </header>
-        <!-- 商家logo部分 -->
-        <div class="business-logo">
-            <img :src="business.businessImg">
+        
+        <!-- 信息未完善提示 -->
+        <div v-if="!isInfoCompleted" class="info-incomplete-warning">
+            <p>您的商家信息尚未完善，部分功能可能无法使用</p>
+            <button @click="goToCompleteInfo">去完善信息</button>
         </div>
 
-        <!-- 商家信息部分 -->
-        <div class="business-info">
-            <h1>{{ business.businessName }}</h1>
-            <p>&#165;{{ business.starPrice }}起送 &#165;{{ business.deliveryPrice }}配送</p>
-            <p>{{ business.businessExplain }}</p>
-        </div>
-
-        <!-- 食品列表部分 -->
-        <ul class="food">
-            <li v-for="(item, index) in foodArr" :key="item.foodId">
-                <div class="food-left">
-                    <img :src="item.foodImg">
-                    <div class="food-left-info">
-                        <h3>{{ item.foodName }}</h3>
-                        <p>{{ item.foodExplain }}</p>
-                        <p>&#165;{{ item.foodPrice }}</p>
+        <div class="content-container">
+            <!-- 商家logo部分 -->
+            <div class="business-logo">
+                <template v-if="business.businessImg">
+                    <img :src="business.businessImg" @error="handleImageError" alt="商家logo">
+                </template>
+                <template v-else>
+                    <div class="default-logo">
+                        <i class="fa fa-store"></i>
                     </div>
-                </div>
-               
-            </li>
-        </ul>
-        <!-- 上架商品按钮部分 -->
-        <div class="bottom-button">
-            <button @click="handleAddProduct">上架商品</button>
+                </template>
+            </div>
+
+            <!-- 商家信息部分 -->
+            <div class="business-info">
+                <h1>{{ business.businessName }}</h1>
+                <p>&#165;{{ business.starPrice }}起送 &#165;{{ business.deliveryPrice }}配送</p>
+                <p>{{ business.businessExplain }}</p>
+            </div>
+
+            <!-- 食品列表部分 -->
+            <ul class="food">
+                <li v-for="item in foodArr" :key="item.foodId">
+                    <div class="food-left">
+                        <img :src="item.foodImg">
+                        <div class="food-left-info">
+                            <h3>{{ item.foodName }}</h3>
+                            <p>{{ item.foodExplain }}</p>
+                            <p>&#165;{{ item.foodPrice }}</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <!-- 上架商品按钮部分 -->
+            <div class="edit-info-button">
+                <button @click="handleEditInfo">修改商家信息</button>
+            </div>
+            <div class="bottom-button">
+                <button @click="handleAddProduct">上架商品</button>
+            </div>
+            <!-- 退出登录按钮 -->
+            <div class="logout-button">
+                <button @click="handleLogout">退出登录</button>
+            </div>
         </div>
     </div>
 </template>
@@ -49,29 +71,79 @@ export default {
         const business = ref({});
         const foodArr = ref([]);
         const user = ref(null);
-        const route = useRoute(); // 定义 route
-        const router = useRouter(); // 定义 router
+        const route = useRoute();
+        const router = useRouter();
+        const isInfoCompleted = ref(true);
+        
+        // 默认图片处理
+        const defaultImage = '/src/assets/default-business.png';
+        const setDefaultImage = `this.src='${defaultImage}'`;
+        
+        const handleImageError = (e) => {
+            console.error('商家图片加载失败');
+            e.target.src = defaultImage;
+        };
+
+        const handleLogout = () => {
+            sessionStorage.removeItem('businessUser');
+            router.push('/businessLogin');
+        };
+
+        const goToCompleteInfo = () => {
+            const businessUser = sessionStorage.getItem('businessUser') ? JSON.parse(sessionStorage.getItem('businessUser')) : null;
+            if (!businessUser) {
+                alert('登录已过期，请重新登录！');
+                router.push('/businessLogin');
+                return;
+            }
+
+            // 设置标记表示这是从商家主页来完善信息
+            businessUser.isNewRegistered = false;
+            businessUser.infoCompleted = false;
+            sessionStorage.setItem('businessUser', JSON.stringify(businessUser));
+
+            router.push({
+                path: '/businessInformation',
+                query: { 
+                    businessId: businessId.value,
+                    from: 'businessView'
+                }
+            });
+        };
 
         onMounted(() => {
-            businessId.value = route.query.businessId;
+            const businessUser = sessionStorage.getItem('businessUser') ? JSON.parse(sessionStorage.getItem('businessUser')) : null;
+            
+            if (!businessUser || !businessUser.isBusiness) {
+                alert('请先登录商家账号！');
+                router.push('/businessLogin');
+                return;
+            }
 
+            isInfoCompleted.value = businessUser.infoCompleted;
+            businessId.value = businessUser.businessId;
 
             // 根据businessId查询商家信息
             axios.post('BusinessController/getBusinessById', {
                 businessId: businessId.value
             }).then(response => {
-                console.log('Business data:', response.data);
                 business.value = response.data;
-            }).catch(handleError);
+                // 再次检查信息完整性
+                if (!business.value.businessName || !business.value.businessAddress || 
+                    !business.value.businessExplain || !business.value.businessImg || 
+                    business.value.startPrice === null || business.value.deliveryPrice === null || 
+                    !business.value.orderTypeId) {
+                    isInfoCompleted.value = false;
+                }
+            }).catch(error => {
+                console.error('获取商家信息失败:', error);
+            });
 
             // 根据businessId查询所属食品信息
             axios.post('FoodController/listFoodByBusinessId', {
                 businessId: businessId.value
             }).then(response => {
                 foodArr.value = response.data.map(item => ({ ...item, quantity: 0 }));
-                if (user.value !== null) {
-                    listCart();
-                }
             }).catch(handleError);
         });
 
@@ -93,252 +165,234 @@ export default {
             });
         };
         const handleAddProduct = () => {
-           router.push({ name: 'SubmitItems', query: { businessId: businessId.value } });
+            const businessUser = sessionStorage.getItem('businessUser') ? JSON.parse(sessionStorage.getItem('businessUser')) : null;
+            if (!businessUser || !businessUser.isBusiness) {
+                alert('登录已过期，请重新登录！');
+                router.push('/businessLogin');
+                return;
+            }
+            router.push({ 
+                name: 'SubmitItems', 
+                query: { businessId: businessUser.businessId } 
+            });
         };
 
-
-
-
+        const handleEditInfo = () => {
+            const businessUser = sessionStorage.getItem('businessUser') ? JSON.parse(sessionStorage.getItem('businessUser')) : null;
+            if (!businessUser || !businessUser.isBusiness) {
+                alert('登录已过期，请重新登录！');
+                router.push('/businessLogin');
+                return;
+            }
+            router.push({ 
+                path: '/businessInformation',
+                query: { 
+                    businessId: businessUser.businessId,
+                    from: 'businessView'
+                }
+            });
+        };
 
         return {
             business,
             foodArr,
             businessId,
-            handleAddProduct
+            handleAddProduct,
+            handleImageError,
+            setDefaultImage,
+            handleLogout,
+            isInfoCompleted,
+            goToCompleteInfo,
+            handleEditInfo
         };
     }
 }
 </script>
 
 <style scoped>
-/****************** 总容器 ******************/
 .wrapper {
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    padding-bottom: 180px; /* 为底部按钮留出空间 */
 }
 
-/****************** header部分 ******************/
-.wrapper header {
-    width: 100%;
-    height: 12vw;
+.content-container {
+    padding-top: 60px; /* 为固定定位的header留出空间 */
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
     background-color: #0097FF;
     color: #fff;
-    font-size: 4.8vw;
-    position: fixed;
-    left: 0;
-    top: 0;
+    font-size: 18px;
     z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/****************** 商家logo部分 ******************/
-.wrapper .business-logo {
-    width: 100%;
-    height: 35vw;
-    /*使用上外边距避开header部分*/
-    margin-top: 12vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.wrapper .business-logo img {
-    width: 40vw;
-    height: 30vw;
-    border-radius: 5px;
-}
-
-/****************** 商家信息部分 ******************/
-.wrapper .business-info {
-    width: 100%;
-    height: 20vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.wrapper .business-info h1 {
-    font-size: 5vw;
-}
-
-.wrapper .business-info p {
-    font-size: 3vw;
-    color: #666;
-    margin-top: 1vw;
-}
-
-/****************** 食品列表部分 ******************/
-.wrapper .food {
-    width: 100%;
-    /*使用下外边距避开footer部分*/
-    margin-bottom: 15vh;
-}
-
-.wrapper .food li {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 2.5vw;
-    user-select: none;
+.info-incomplete-warning {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background-color: #fff7e6;
+    border: 1px solid #ffe7ba;
+    z-index: 999;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.wrapper .food li .food-left {
+.info-incomplete-warning p {
+    margin: 0;
+    color: #fa8c16;
+}
+
+.info-incomplete-warning button {
+    padding: 4px 8px;
+    background-color: #fa8c16;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.business-logo {
+    width: 100%;
+    padding: 20px 0;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+}
+
+.business-logo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.business-logo .default-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
-.wrapper .food li .food-left img {
-    width: 20vw;
-    height: 20vw;
-}
-
-.wrapper .food li .food-left .food-left-info {
-    margin-left: 3vw;
-}
-
-.wrapper .food li .food-left .food-left-info h3 {
-    font-size: 3.8vw;
-    color: #555;
-}
-
-.wrapper .food li .food-left .food-left-info p {
-    font-size: 3vw;
-    color: #888;
-    margin-top: 2vw;
-}
-
-.wrapper .food li .food-right {
-    width: 16vw;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.wrapper .food li .food-right .fa-minus-circle {
-    font-size: 5.5vw;
+.business-logo .default-logo i {
+    font-size: 48px;
     color: #999;
-    cursor: pointer;
 }
 
-.wrapper .food li .food-right p {
-    font-size: 3.6vw;
+.business-info {
+    padding: 20px;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+.business-info h1 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
     color: #333;
 }
 
-.wrapper .food li .food-right .fa-plus-circle {
-    font-size: 5.5vw;
-    color: #0097EF;
-    cursor: pointer;
+.business-info p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 14px;
 }
 
-/****************** 购物车部分 ******************/
-.wrapper .cart {
-    width: 100%;
-    height: 14vw;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    display: flex;
+.food {
+    background-color: #fff;
+    padding: 0;
+    margin: 0;
+    list-style: none;
 }
 
-.wrapper .cart .cart-left {
-    flex: 2;
-    background-color: #505051;
-    display: flex;
+.food li {
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-.wrapper .cart .cart-left .cart-left-icon {
-    width: 16vw;
-    height: 16vw;
-    box-sizing: border-box;
-    border: solid 1.6vw #444;
-    border-radius: 8vw;
-    background-color: #3190E8;
-    font-size: 7vw;
-    color: #fff;
+.food-left {
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin-top: -4vw;
-    margin-left: 3vw;
-    position: relative;
 }
 
-.wrapper .cart .cart-left .cart-left-icon-quantity {
-    width: 5vw;
-    height: 5vw;
-    border-radius: 2.5vw;
-    background-color: red;
-    color: #fff;
-    font-size: 3.6vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    right: -1.5vw;
-    top: -1.5vw;
+.food-left img {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    margin-right: 15px;
+    object-fit: cover;
 }
 
-.wrapper .cart .cart-left .cart-left-info p:first-child {
-    font-size: 4.5vw;
-    color: #fff;
-    margin-top: 1vw;
-}
-
-.wrapper .cart .cart-left .cart-left-info p:last-child {
-    font-size: 2.8vw;
-    color: #AAA;
-}
-
-.wrapper .cart .cart-right {
+.food-left-info {
     flex: 1;
 }
 
-/*达到起送费时的样式*/
-.wrapper .cart .cart-right .cart-right-item {
+.food-left-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.food-left-info p {
+    margin: 3px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.edit-info-button,
+.bottom-button,
+.logout-button {
+    position: fixed;
+    left: 0;
+    right: 0;
+    padding: 10px 15px;
+    background-color: #fff;
+}
+
+.edit-info-button {
+    bottom: 120px;
+}
+
+.bottom-button {
+    bottom: 60px;
+}
+
+.logout-button {
+    bottom: 0;
+}
+
+.edit-info-button button,
+.bottom-button button {
     width: 100%;
-    height: 100%;
-    background-color: #38CA73;
+    height: 40px;
+    background-color: #0097FF;
     color: #fff;
-    font-size: 4.5vw;
-    font-weight: 700;
-    user-select: none;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-/****************** 上架商品按钮部分 ******************/
-.wrapper .bottom-button {
-  width: 100%;
-  height: 7vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  bottom: 8vh;
-  left: 0;
-  background-color: #0097ff; /* 按钮颜色与顶部保持一致 */
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
 }
 
-.wrapper .bottom-button button {
-  width: 90%;
-  height: 5vh;
-  font-size: 4vw;
-  font-weight: 700;
-  color: white;
-  background-color: #0097ff; /* 按钮颜色与顶部保持一致 */
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.wrapper .bottom-button button:hover {
-  background-color: #007acc;
+.logout-button button {
+    width: 100%;
+    height: 40px;
+    background-color: #ff4d4f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
 }
 </style>

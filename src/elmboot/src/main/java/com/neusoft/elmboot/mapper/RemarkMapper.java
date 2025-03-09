@@ -28,4 +28,6 @@ public interface RemarkMapper {
     @Select("delete from remark where userId=#{userId}")
     public List<Remark> removeAllRemarksByUserId(String userId);
 	
+    @Select("select count(*) from remarks where businessId=#{businessId}")
+    public int getRemarkCountByBusinessId(Integer businessId);
 }

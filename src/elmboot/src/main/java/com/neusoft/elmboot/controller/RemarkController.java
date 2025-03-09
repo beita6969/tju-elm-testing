@@ -46,5 +46,11 @@ public class RemarkController {
     	return remarkService.removeAllRemarksByUserId(userId);
     }
     
-    
+    @RequestMapping("/getRemarkCountByBusinessId")
+    public int getRemarkCountByBusinessId(@RequestBody Remark remark) {
+        if (remark == null || remark.getBusinessId() == null) {
+            return 0;
+        }
+        return remarkService.getRemarkCountByBusinessId(remark.getBusinessId());
+    }
 }

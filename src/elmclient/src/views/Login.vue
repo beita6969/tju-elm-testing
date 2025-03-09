@@ -66,9 +66,18 @@
 		}
   
 		// 登录请求
-		axios.post('UserController/getUserByIdByPass', {
+		const loginData = {
 		  userId: userId.value,
 		  password: password.value
+		};
+  
+		axios({
+		  method: 'post',
+		  url: 'UserController/getUserByIdByPass',
+		  data: loginData,
+		  headers: {
+			'Content-Type': 'application/json'
+		  }
 		}).then(response => {
 		  const user = response.data;
 		  if (!user) {
@@ -78,7 +87,25 @@
 			router.push({ path: '/index' });
 		  }
 		}).catch(error => {
-		  console.error(error);
+		  console.error('登录错误:', error);
+		  if (error.response) {
+			// 服务器返回错误状态码
+			if (error.response.status === 404) {
+			  alert('接口不存在，请检查API路径！');
+			} else if (error.response.status === 500) {
+			  alert('服务器内部错误，请稍后重试！');
+			} else if (error.response.status === 415) {
+			  alert('请求格式错误，请检查数据格式！');
+			} else {
+			  alert('登录失败：' + (error.response.data?.message || '未知错误'));
+			}
+		  } else if (error.request) {
+			// 请求发出但没有收到响应
+			alert('无法连接到服务器，请检查网络连接！');
+		  } else {
+			// 请求配置出错
+			alert('请求配置错误，请稍后重试！');
+		  }
 		});
 	  };
   

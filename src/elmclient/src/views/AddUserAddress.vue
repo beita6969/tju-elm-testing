@@ -57,6 +57,7 @@ import Footer from '../components/Footer.vue';
 import axios from 'axios';
 import qs from 'qs';
 import { useRouter } from 'vue-router';
+import { toast } from '../utils/toast';
 
 export default {
 	name: 'AddUserAddress',
@@ -76,42 +77,37 @@ export default {
 		const router = useRouter();
 		const reg = /^1[3456789]\d{9}$/;
 		onMounted(() => {
-			
-			//const userId = sessionStorage.getItem(userId);
-
-			
 			user.value = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null;
 			businessId.value = user.value.businessId;
-			
 		});
 		
 		const addUserAddress = () => {
 			if (!(deliveryAddress.value.contactName.trim())) {
-				alert('联系人姓名不能为空！');
+				toast.warning('联系人姓名不能为空！');
 				return;
 			}
 			if (!reg.test(deliveryAddress.value.contactTel)) {
-				alert('联系人电话不能为空！');
+				toast.warning('请输入正确的手机号码！');
 				return;
 			}
 			if (!(deliveryAddress.value.address.trim())) {
-				alert('联系人地址不能为空！');
+				toast.warning('联系人地址不能为空！');
 				return;
 			}
-			console.log(user.value);
 			
 			deliveryAddress.value.userId = user.value.userId;
 			axios.post('DeliveryAddressController/saveDeliveryAddress', deliveryAddress.value)
 				.then(response => {
 					if (response.data > 0) {
-						console.log("113");
+						toast.success('添加地址成功！');
 						router.push({ path: '/userAddress', query: { businessId: businessId.value } });
 					} else {
-						alert('新增地址失败！');
+						toast.error('新增地址失败！');
 					}
 				})
 				.catch(error => {
 					console.error(error);
+					toast.error('新增地址失败，请重试！');
 				});
 		};
 

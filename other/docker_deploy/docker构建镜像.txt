@@ -1,0 +1,21 @@
+# 构建ELM镜像
+docker build -f Dockerfile -t elmboot-app:latest .
+# 为ELM镜像打tag,为了上传到DockerHub
+docker tag elmboot-app:latest jhm2004/tju-springboot-elm:latest
+# 推送到DockerHub,在此之前需要docker login登录 
+docker push jhm2004/tju-springboot-elm:latest
+
+
+# ------------------  其他  --------------------
+
+VM_IP=$(curl -s https://api.ipify.org) docker compose -f compose.yaml up -d
+
+# 单独run elmboot-app
+docker run --name elmboot-app -p 8888:8080 --env VITE_API_BASE_URL=http://${VM_IP}:8888/ --network springboot-elm_elmboot elmboot-app:latest
+
+# 一键部署命令
+sudo curl -fsSL -o ~/deploy.sh https://www.yangyuxin.cn/elm/boot/deploy.sh && sudo curl -fsSL -o ~/elm.sql https://www.yangyuxin.cn/elm/boot/elm.sql && sudo curl -fsSL -o ~/docker-compose.yaml https://www.yangyuxin.cn/elm/boot/docker-compose.yaml && sudo chmod +x ~/deploy.sh && sudo bash ~/deploy.sh
+# 端口
+mysql 11000
+elmboot-app 10000
+

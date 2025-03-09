@@ -40,4 +40,8 @@ public class RemarkServiceImpl implements RemarkService{
 		return remarkMapper.removeAllRemarksByUserId(userId);
 	}
 	
+	@Override
+	public int getRemarkCountByBusinessId(Integer businessId) {
+		return remarkMapper.getRemarkCountByBusinessId(businessId);
+	}
 }

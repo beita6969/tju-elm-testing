@@ -17,7 +17,7 @@ public class UserAvatar {
         return userImg;
     }
 
-    public void getUserImg(String userImg) {
+    public void setUserImg(String userImg) {
         this.userImg = userImg;
     }
 }

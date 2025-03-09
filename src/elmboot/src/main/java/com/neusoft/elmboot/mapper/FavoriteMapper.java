@@ -20,4 +20,7 @@ public interface FavoriteMapper {
 
 	 @Delete("delete from favorite where userId=#{userId} and businessId=#{businessId}")
 	 public int removeFavoriteBusinessId(Favorite favorite);
+	 
+	 @Select("select count(*) from favorite where businessId=#{businessId}")
+	 public int getFavoriteCountByBusinessId(Favorite favorite);
 }

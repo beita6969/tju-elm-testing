@@ -32,4 +32,9 @@ public class FavoriteController {
 	public int removeFavoriteBusinessId(@RequestBody Favorite favorite) {
 		return favoriteService.removeFavoriteBusinessId(favorite);
 	}
+	
+	@RequestMapping("/getFavoriteCountByBusinessId")
+	public int getFavoriteCountByBusinessId(@RequestBody Favorite favorite) {
+		return favoriteService.getFavoriteCountByBusinessId(favorite);
+	}
 }

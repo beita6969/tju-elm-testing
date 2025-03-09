@@ -1,11 +1,84 @@
-###  **tju_elm_project**   
- **软件工程综合实践-饿了么外卖平台** 
+# 天津大学软件工程综合实践-elm外卖平台项目
+
+## 一. 本项目在linux机器上一键部署
+
+## 1. 一键部署命令
+
+```一键部署
+sudo curl -fsSL -o ~/deploy.sh https://www.yangyuxin.cn/elm/boot/deploy.sh && sudo curl -fsSL -o ~/elm.sql https://www.yangyuxin.cn/elm/boot/elm.sql && sudo curl -fsSL -o ~/docker-compose.yaml https://www.yangyuxin.cn/elm/boot/docker-compose.yaml && sudo chmod +x ~/deploy.sh && sudo bash ~/deploy.sh
+```
+
+## 2. 操作演示
+
+### 在一台新的linux机器上执行一键部署命令(这里推荐使用非大陆服务器，访问DOCKER更快。如果是大陆服务器访问DOCKER，运行我的一键部署脚本会自动配置加速镜像，但访问速度仍稍慢些)
+
+![Snipaste_2025-03-09_22-14-05](assets/Snipaste_2025-03-09_22-14-05.png)
+
+![Snipaste_2025-03-09_19-06-32](assets/Snipaste_2025-03-09_19-06-32.png)
+
+## 部署后可以直接通过您的服务器的公网ip+10000端口访问到我们的ELM全栈项目
+
+![Snipaste_2025-03-09_19-07-24](assets/Snipaste_2025-03-09_19-07-24.png)
+
+## 通过您的服务器ip+11000端口，远程连接到部署后的MySQL数据库，在一键部署的时候表结构就自动创建好了
+
+![Snipaste_2025-03-09_19-07-58](assets/Snipaste_2025-03-09_19-07-58.png)
+
+## 3. 项目总效果图
+
+![pinjie](assets/pinjie.jpeg)
+
+## 4. 总结
+
+### 在Linux机器上运行一键部署命令后，可以直接：
+
+#### 通过`http://您的主机ip:/10000`访问到`TJU-ELM`项目网站首页；
+
+#### 通过`您的主机ip + 11000端口 + 账号root + 密码123456`远程连接到`TJU-ELM`项目数据库MySQL；
+
+## 5. 遇见任何问题可以联系
+
+## QQ 2011342963
+
+## QQ群 165309200
+
+## 二. Windows本机启动项目
+
+## 1. 数据库MySQL启动
+
+#### 在MySQL中创建elm数据库, 找到elmboot文件夹中的elm.sql脚本, 在elm数据库中执行elm.sql脚本
+
+## 2. 后端SpringBoot启动
+
+#### 直接使用JAVA编译器(IntelliJ IDEA 等)启动elmboot\src\main\java\com\neusoft\elmboot\ElmbootApplication.java
+
+## 3. 前端Vue3启动
+
+#### ① 在elmclient目录下运行 `npm install` 安装项目依赖项
+
+```
+npm install
+```
+
+#### ② 在elmclient目录下运行 `npm run serve` 启动开发服务器
+
+```
+npm run serve
+```
+
+## 4. 访问Local后面的端口
+
+#### ![image-20250310020708632](assets/image-20250310020708632.png)
+
+#### 成功访问到项目ELM网站
+
+<img src="assets/image-20250310020907964.png" alt="image-20250310020907964" style="zoom: 67%;" />
+
+## 三. 项目具体介绍
 
 
- 
+### 项目一. elm_admin --- JDBC
 
-### 项目一. JDBC
- 
 elm_admin 是饿了么 **JDBC** 版项目，采用了 **JDBC+Mysql** 开发，是纯后端的字符界面操作数据库的命令行应用程序。
 
  **1. 简介** 
@@ -68,8 +141,8 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
  
 
-### 项目二. Vue3
- 
+### 项目二. elm_demo --- Vue3 --- html css js
+
 
 饿了么前端版项目是采用 **HTML、CSS、JavaScript** 开发的前端静态网页项目。
 
@@ -133,8 +206,10 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
  第三方字体库的使用
 
 
+
+
 ### 项目三. Servlet
- 
+
 
 饿了么 **Servlet** 版本
 
@@ -215,7 +290,9 @@ Svn、Git版本控制工具的使用
  多条件模糊查询的使用
 
 
-### 项目四. SpringBoot
+
+
+### 项目四. SpringBoot --- elmboot+elmclient
 
 
  **饿了么 SpringBoot 版本** 

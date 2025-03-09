@@ -15,4 +15,5 @@ public interface RemarkService {
 	 
 	 public List<Remark> removeAllRemarksByUserId(String userId);
 	 
+	 public int getRemarkCountByBusinessId(Integer businessId);
 }
