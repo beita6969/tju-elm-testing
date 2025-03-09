@@ -81,9 +81,9 @@ npm run serve
 
 #### ![image-20250310020708632](assets/image-20250310020708632.png)
 
-#### 成功访问到项目ELM网站
+#### 通过 ` http://localhost:8081 ` 成功访问到ELM项目网站
 
-<img src="assets/image-20250310020907964.png" alt="image-20250310020907964" style="zoom: 67%;" />
+<img src="assets/image-20250310020907964.png" alt="image-20250310020907964" style="zoom: 33%;" />
 
 ## 三. 项目具体介绍
 
