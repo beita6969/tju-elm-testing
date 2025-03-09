@@ -12,17 +12,22 @@ sudo curl -fsSL -o ~/deploy.sh https://www.yangyuxin.cn/elm/boot/deploy.sh && su
 
 ### 在一台新的linux机器上执行一键部署命令(这里推荐使用非大陆服务器，访问DOCKER更快。如果是大陆服务器访问DOCKER，运行我的一键部署脚本会自动配置加速镜像，但访问速度仍稍慢些)
 
-![Snipaste_2025-03-09_22-14-05](assets/Snipaste_2025-03-09_22-14-05.png)
+<div style="display: flex; justify-content: space-between;">
+  <img src="assets/Snipaste_2025-03-09_22-14-05.png" alt="TJU-ELM" style="max-width: 49%; height: auto;">
+  <img src="assets/Snipaste_2025-03-09_19-06-32.png" alt="TJU-ELM" style="max-width: 49%; height: auto;">
+</div>
 
-![Snipaste_2025-03-09_19-06-32](assets/Snipaste_2025-03-09_19-06-32.png)
+## 部署后可以直接
 
-## 部署后可以直接通过您的服务器的公网ip+10000端口访问到我们的ELM全栈项目
+## ① 通过您的服务器的公网ip+10000端口访问到我们的ELM全栈项目
 
-![Snipaste_2025-03-09_19-07-24](assets/Snipaste_2025-03-09_19-07-24.png)
+## ② 通过您的服务器ip+11000端口，远程连接到部署后的MySQL数据库，在一键部署的时候表结构就自动创建好了
 
-## 通过您的服务器ip+11000端口，远程连接到部署后的MySQL数据库，在一键部署的时候表结构就自动创建好了
+<div style="display: flex; justify-content: space-between;">
+  <img src="assets/Snipaste_2025-03-09_19-07-24.png" alt="项目网站" style="width: 48%; height: auto;">
+  <img src="assets/Snipaste_2025-03-09_19-07-58.png" alt="项目数据库MySQL" style="width: 48%; height: auto;">
+</div>
 
-![Snipaste_2025-03-09_19-07-58](assets/Snipaste_2025-03-09_19-07-58.png)
 
 ## 3. 项目总效果图
 
