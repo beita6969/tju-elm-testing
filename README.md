@@ -83,7 +83,9 @@ npm run serve
 
 #### 通过 ` http://localhost:8081 ` 成功访问到ELM项目网站
 
-<img src="assets/image-20250310020907964.png" alt="image-20250310020907964" style="zoom: 33%;" />
+<div style="display: flex; justify-content: space-between;">
+  <img src="assets/image-20250310020907964.png" alt="TJU-ELM" style="width: auto; height: 400px;">
+</div>
 
 ## 三. 项目具体介绍
 
