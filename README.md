@@ -75,7 +75,6 @@ npm run serve
 </div>
 ## 三. 项目具体介绍
 
-
 ### 项目一. elm_admin --- JDBC
 
 #### elm_admin 是饿了么 **JDBC** 版项目，采用了 **JDBC+Mysql** 开发，是纯后端的字符界面操作数据库的命令行应用程序。
