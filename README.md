@@ -40,6 +40,8 @@ sudo curl -fsSL -o ~/deploy.sh https://www.yangyuxin.cn/elm/boot/deploy.sh && su
 
 #### QQ群 165309200
 
+
+
 ## 二. Windows本机启动项目
 
 ### 1. 数据库MySQL启动
@@ -73,6 +75,8 @@ npm run serve
 <div style="display: flex; justify-content: space-between;">
   <img src="assets/image-20250310020907964.png" alt="TJU-ELM" style="width: auto; height: 400px;">
 </div>
+
+
 ## 三. 项目具体介绍
 
 ### 项目一. elm_admin --- JDBC
