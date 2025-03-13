@@ -4,7 +4,7 @@
 
 ### 1. 一键部署命令
 
-```一键部署
+```shell
 sudo curl -fsSL -o ~/deploy.sh https://www.yangyuxin.cn/elm/boot/deploy.sh && sudo curl -fsSL -o ~/elm.sql https://www.yangyuxin.cn/elm/boot/elm.sql && sudo curl -fsSL -o ~/docker-compose.yaml https://www.yangyuxin.cn/elm/boot/docker-compose.yaml && sudo chmod +x ~/deploy.sh && sudo bash ~/deploy.sh
 ```
 
@@ -56,13 +56,13 @@ sudo curl -fsSL -o ~/deploy.sh https://www.yangyuxin.cn/elm/boot/deploy.sh && su
 
 #### ① 在elmclient目录下运行 `npm install` 安装项目依赖项
 
-```
+```bash
 npm install
 ```
 
 #### ② 在elmclient目录下运行 `npm run serve` 启动开发服务器
 
-```
+```bash
 npm run serve
 ```
 
