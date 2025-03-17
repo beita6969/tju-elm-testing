@@ -270,6 +270,7 @@ done
 # 如果达到最大重试次数仍未成功，则报错退出
 if [ $success -ne 1 ]; then
     echo -e "${RED}数据库初始化失败，已达到最大重试次数。${NC}"
+	echo -e "${RED}请检查内存是否充足，服务器至少应有2G内存。${NC}"
     exit 1
 fi
 
