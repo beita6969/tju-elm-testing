@@ -1,6 +1,7 @@
 package com.neusoft.elmboot.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +14,7 @@ import com.neusoft.elmboot.service.BusinessService;
 import com.neusoft.elmboot.service.RemarkService;
 
 @RestController
-@RequestMapping("/RemarkController")
+@RequestMapping("/CommentController")
 public class RemarkController {
     @Autowired
     private RemarkService remarkService;
@@ -35,12 +36,6 @@ public class RemarkController {
     	return remarkService.removeOneRemark(remark);
     }
     
-    
-    
-    
-    
-    
-    //需要userId
     @RequestMapping("/removeAllRemarksByUserId")
     public List<Remark> removeAllRemarksByUserId(String userId){
     	return remarkService.removeAllRemarksByUserId(userId);
@@ -52,5 +47,10 @@ public class RemarkController {
             return 0;
         }
         return remarkService.getRemarkCountByBusinessId(remark.getBusinessId());
+    }
+    
+    @RequestMapping("/getCommentsByUserId")
+    public List<Map<String, Object>> getCommentsByUserId(@RequestBody Map<String, String> param){
+        return remarkService.getCommentsByUserId(param.get("userId"));
     }
 }

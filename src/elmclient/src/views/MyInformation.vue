@@ -5,35 +5,39 @@
         <h1>个人信息</h1>
       </div>
       <div class="content">
-        <div class="avatar_name">用户头像</div>
-        <div class="avatar" @click="showUpload">
-          <img :src="user2?.userImg || user?.userImg" alt="点击更换头像" />
-          <div class="avatar-overlay">
-            <span>点击更换头像</span>
+        <div class="user-info-container">
+          <div class="details">
+            <p class="nickname" @click="editNickname">昵称: {{ user?.userName }}</p>
+            <p class="phone">电话: {{ user?.userId }}</p>
+            <p class="gender">性别: {{ user?.userSex === 1 ? '男' : '女' }}</p>
+          </div>
+          <div class="avatar" @click="showUpload">
+            <img :src="user2?.userImg || user?.userImg" alt="点击更换头像" />
+            <div class="avatar-overlay">
+              <span>点击更换头像</span>
+            </div>
           </div>
         </div>
-        <div class="details">
-          <p class="nickname">昵称: {{ user?.userName }}</p>
-          <p class="phone">电话: {{ user?.userId }}</p>
-          <p class="gender">性别: {{ user?.userSex === 1 ? '男' : '女' }}</p>
-        </div>
         <div class="actions">
-          <button @click="editNickname">修改昵称</button>
           <div class="edit-nickname" v-if="showEditNickname">
             <input v-model="newNickname" placeholder="输入新昵称" />
             <button @click="submitNickname">提交</button>
           </div>
-          <button @click="editpasswd">修改密码</button>
           <div class="ep" v-if="showEditPassword">
-            <div class="edit-password" v-if="showEditPassword">
+            <div class="edit-password">
               <input type="password" v-model="oldPassword" placeholder="输入旧密码" />
               <input type="password" v-model="newPassword" placeholder="输入新密码" />
             </div>
             <button @click="submitPassword">提交</button>
           </div>
           <input type="file" ref="fileInput" @change="uploadAvatar" accept="image/*" style="display:none;" />
-          <button @click="logout">退出登录</button>
-          <button @click="myfavorite">收藏列表</button>
+          <div class="main-buttons">
+            <button class="btn-red" @click="editpasswd">修改密码</button>
+            <button class="btn-orange" @click="myfavorite">收藏列表</button>
+            <button class="btn-yellow" @click="goToLikesList">点赞列表</button>
+            <button class="btn-blue" @click="goToCommentsList">评论列表</button>
+            <button class="btn-purple" @click="logout">退出登录</button>
+          </div>
         </div>
       </div>
     </div>
@@ -244,7 +248,15 @@ export default {
     };
 
     const myfavorite = () => {
-      router.push({ path: '/myfavorite' });
+      router.push({ path: '/favorites' });
+    };
+
+    const goToLikesList = () => {
+      router.push({ path: '/likes' });
+    };
+
+    const goToCommentsList = () => {
+      router.push({ path: '/comments' });
     };
 
     return {
@@ -263,7 +275,9 @@ export default {
       showUpload,
       uploadAvatar,
       fileInput,
-      myfavorite
+      myfavorite,
+      goToLikesList,
+      goToCommentsList
     };
   },
   components: {
@@ -273,13 +287,12 @@ export default {
 </script>
 
 <style scoped>
-/* 调整整体布局的高度和间距 */
 .wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   padding-bottom: 8vh;
-  /* 预留footer的空间，防止内容被遮挡 */
+  background-color: #f8f9fa;
 }
 
 .my-information {
@@ -287,56 +300,73 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 
-.wrapper .my-information .header {
+.header {
   width: 100%;
-  height: 15vw;
-  /* 增加 header 高度 */
+  height: 10vw;
   background-color: #0097ff;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.wrapper .my-information .header h1 {
+.header h1 {
   color: white;
-  font-size: 6vw;
-  /* 增加标题字体大小 */
+  font-size: 4.5vw;
   margin: 0;
+  font-weight: 500;
 }
 
-.wrapper .my-information .content .avatar_name {
-  font-size: 5vw;
-  /* 增加字体大小 */
-  font-weight: bold;
-  margin: 3vw;
+.content {
+  width: 92%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 12px;
+  margin-top: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 15px 0;
 }
 
-.wrapper .my-information .avatar {
+.user-info-container {
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 2vw auto;
+}
+
+.avatar {
   position: relative;
   cursor: pointer;
-  width: 25vw;
-  height: 25vw;
-  margin: 5vw;
+  width: 20vw;
+  height: 20vw;
   border-radius: 50%;
   overflow: hidden;
+  border: 2px solid #0097ff;
+  box-shadow: 0 4px 12px rgba(0, 151, 255, 0.2);
+  flex-shrink: 0;
 }
 
-.wrapper .my-information .avatar img {
+.avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  transition: filter 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.wrapper .my-information .avatar:hover img {
-  filter: brightness(70%);
+.avatar:hover img {
+  filter: brightness(85%);
+  transform: scale(1.05);
 }
 
-.wrapper .my-information .avatar-overlay {
+.avatar-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -352,122 +382,188 @@ export default {
   border-radius: 50%;
 }
 
-.wrapper .my-information .avatar:hover .avatar-overlay {
+.avatar:hover .avatar-overlay {
   opacity: 1;
 }
 
-.wrapper .my-information .avatar-overlay span {
-  font-size: 3vw;
+.avatar-overlay span {
+  font-size: 2.5vw;
   text-align: center;
+  padding: 1vw;
 }
 
-.wrapper .my-information .content {
-  width: 100%;
+.details {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #f1eeee;
-}
-
-.wrapper .my-information .details,
-.wrapper .my-information .actions {
-  width: 80%;
-  max-width: 500px;
-  margin: 5vw;
-}
-
-.wrapper .my-information .details {
-  margin-bottom: 5vw;
-}
-
-.wrapper .my-information .nickname,
-.wrapper .my-information .phone,
-.wrapper .my-information .gender {
-  font-size: 4vw;
-  /* 增加文本字体大小 */
-  font-weight: bold;
-  margin: 2vw 0;
-  text-align: center;
-}
-
-.wrapper .my-information .actions {
-  display: flex;
-  flex-direction: column;
-  gap: 4vw;
-  /* 增加按钮之间的间距 */
-}
-
-.wrapper .my-information .actions button {
+  background-color: #f8f9fa;
   padding: 3vw;
-  /* 增加按钮高度 */
-  border: none;
-  border-radius: 2vw;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.nickname {
   cursor: pointer;
-  background-color: #0097ff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 1.5vw;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  margin-bottom: 1.5vw;
+}
+
+.nickname::after {
+  content: '点击修改';
+  margin-left: auto;
+  color: #999;
+  font-size: 2.8vw;
+  padding-left: 2vw;
+}
+
+.phone,
+.gender {
+  font-size: 3.5vw;
+  margin: 1.5vw 0;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  padding: 1.5vw;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.actions {
+  width: 90%;
+  max-width: 500px;
+  margin: 2vw auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2vw;
+}
+
+.main-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 2vw;
+  width: 100%;
+}
+
+.main-buttons button {
+  padding: 2.5vw;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
   color: white;
   font-size: 4vw;
-  /* 增加按钮字体大小 */
   width: 100%;
   text-align: center;
-  /* 确保按钮内文本居中 */
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-.wrapper .my-information .actions .edit-nickname {
-  display: flex;
-  flex-direction: row;
-  /* 调整为垂直布局，保持按钮居中 */
-  align-items: center;
+.main-buttons button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.wrapper .my-information .actions .edit-nickname input {
-  margin-right: 2vw;
-  height: 10vw;
-  /* 增加输入框高度 */
-  font-size: 3vw;
-  /* 增加输入框字体大小 */
-  flex: 1;
+.main-buttons button:active {
+  transform: translateY(0);
 }
 
-.wrapper .my-information .actions .edit-nickname button {
+.btn-red {
+  background-color: #ff3b30 !important;
+}
+
+.btn-orange {
+  background-color: #ff9500 !important;
+}
+
+.btn-yellow {
+  background-color: #05cf37 !important;
+}
+
+.btn-blue {
+  background-color: #0097ff !important;
+}
+
+.btn-purple {
+  background-color: #9932cc !important;
+}
+
+.edit-nickname,
+.edit-password,
+.ep {
   width: 100%;
-  /* 确保提交按钮宽度为100% */
-
-  font-size: 4vw;
-  text-align: center;
-  /* 确保提交按钮文本居中 */
-}
-
-.wrapper .my-information .actions .ep {
-  display: flex;
-  flex-direction: row;
-
-}
-
-.wrapper .my-information .actions .edit-password {
   display: flex;
   flex-direction: column;
-  /* 横向布局 */
-  gap: 1vw;
-  align-items: center;
+  gap: 1.5vw;
+  margin-top: -1vw;
+  margin-bottom: 1vw;
+  background-color: #f8f9fa;
+  padding: 2.5vw;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.wrapper .my-information .actions .edit-password input {
-  flex: 1;
-  /* 使输入框占据可用空间 */
-  height: 6vw;
-  font-size: 4vw;
-  margin-right: 2vw;
+.edit-nickname input,
+.edit-password input {
+  height: 9vw;
+  font-size: 3.5vw;
+  padding: 0 2.5vw;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: white;
 }
 
-.wrapper .my-information .actions .edit-password button {
-  height: 6vw;
-  font-size: 4vw;
-  padding: 0 3vw;
-  /* 适当调整按钮宽度 */
+.edit-nickname button,
+.ep button {
+  margin-top: 1.5vw;
+  height: 9vw;
 }
 
-.wrapper .my-information .actions button:hover {
-  background-color: #0086e6;
+@media (min-width: 768px) {
+  .content {
+    width: 85%;
+    max-width: 600px;
+  }
+  
+  .user-info-container {
+    gap: 30px;
+  }
+  
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .nickname::after {
+    font-size: 12px;
+  }
+  
+  .nickname,
+  .phone,
+  .gender,
+  .avatar_name {
+    font-size: 16px;
+  }
+  
+  .main-buttons button {
+    font-size: 16px;
+    padding: 12px;
+  }
+  
+  .avatar-overlay span {
+    font-size: 14px;
+  }
+  
+  .header {
+    height: 60px;
+  }
+  
+  .header h1 {
+    font-size: 20px;
+  }
 }
 </style>

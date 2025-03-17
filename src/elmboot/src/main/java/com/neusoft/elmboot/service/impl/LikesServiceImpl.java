@@ -1,5 +1,8 @@
 package com.neusoft.elmboot.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +34,10 @@ public class LikesServiceImpl implements LikesService {
 	 @Override
 	 public int getLikesByUserIdByBusinessId(Likes likes) {
 		 return likesMapper.getLikesByUserIdByBusinessId(likes);
+	 }
+	 
+	 @Override
+	 public List<Map<String, Object>> getLikesByUserId(String userId) {
+		 return likesMapper.getLikesByUserId(userId);
 	 }
 }

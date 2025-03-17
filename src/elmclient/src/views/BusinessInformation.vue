@@ -422,5 +422,55 @@ header p {
     background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 8px center;
     background-color: #fff;
     padding-right: 24px;
+    height: 36px;
+    position: relative;
+}
+
+/* 添加下拉菜单样式 */
+.shop-type-select option {
+    padding: 8px;
+    height: 36px;
+    line-height: 36px;
+}
+
+/* 设置下拉列表的样式 */
+.shop-type-select:focus {
+    height: 36px;
+}
+
+/* 控制下拉列表样式 */
+select.shop-type-select {
+    position: relative;
+}
+
+/* 设置下拉列表的最大高度和滚动条 */
+.shop-type-select option:checked {
+    background-color: #e6f7ff;
+    color: #333;
+}
+
+/* 自定义下拉列表样式 */
+select.shop-type-select:not([size]):focus option {
+    max-height: calc(36px * 5);
+    overflow-y: auto;
+}
+
+/* 美化滚动条样式 */
+.shop-type-select::-webkit-scrollbar {
+    width: 6px;
+}
+
+.shop-type-select::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.shop-type-select::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.shop-type-select::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 </style>

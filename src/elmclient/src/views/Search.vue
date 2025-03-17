@@ -17,7 +17,7 @@
     <div v-if="searchHistory.length > 0" class="history">
       <h2>搜索历史</h2>
       <ul>
-        <li v-for="( history, index) in searchHistory" :key="index">
+        <li v-for="( history, index) in searchHistory" :key="index" @click="handleHistoryClick(history)" class="history-item">
           {{ history }}
         </li>
       </ul>
@@ -105,12 +105,17 @@ export default {
         console.error('搜索内容不能为空');
       };
     }
+    const handleHistoryClick = (history) => {
+      searchQuery.value = history;
+      performSearch();
+    };
     return {
       searchQuery,
       searchHistory,
       searchResults,
       performSearch,
-      toBusinessInfo
+      toBusinessInfo,
+      handleHistoryClick
     };
   },
 };
@@ -187,6 +192,12 @@ export default {
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.history li:hover {
+  background-color: #e0e0e0;
 }
 
 /* 搜索结果 */

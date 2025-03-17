@@ -1,6 +1,7 @@
 package com.neusoft.elmboot.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,5 +44,10 @@ public class RemarkServiceImpl implements RemarkService{
 	@Override
 	public int getRemarkCountByBusinessId(Integer businessId) {
 		return remarkMapper.getRemarkCountByBusinessId(businessId);
+	}
+	
+	@Override
+	public List<Map<String, Object>> getCommentsByUserId(String userId) {
+		return remarkMapper.getCommentsByUserId(userId);
 	}
 }

@@ -87,25 +87,35 @@ export default {
 		const router = useRouter(); // 定义 router
 
 		onMounted(() => {
-			businessId.value = route.query.businessId;
+			// 确保businessId是数字类型
+			businessId.value = parseInt(route.query.businessId);
+			console.log('BusinessInfo - 获取到的商家ID:', businessId.value);
 			user.value = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null;
 
 			// 根据businessId查询商家信息
-			axios.post('BusinessController/getBusinessById',  {businessId: businessId.value 
+			axios.post('BusinessController/getBusinessById', { 
+				businessId: businessId.value 
 			}).then(response => {
 				console.log('Business data:', response.data);
 				business.value = response.data;
-			}).catch(handleError);
+			}).catch(error => {
+				console.error('获取商家信息失败:', error);
+				handleError(error);
+			});
 
 			// 根据businessId查询所属食品信息
 			axios.post('FoodController/listFoodByBusinessId', {
 				 businessId: businessId.value 
 			}).then(response => {
+				console.log('Food data:', response.data);
 				foodArr.value = response.data.map(item => ({ ...item, quantity: 0 }));
 				if (user.value !== null) {
 					listCart();
 				}
-			}).catch(handleError);
+			}).catch(error => {
+				console.error('获取食品信息失败:', error);
+				handleError(error);
+			});
 		});
 
 		const handleError = (error) => {

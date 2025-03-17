@@ -2,7 +2,9 @@
 	<div class="app-container">
 	  <BackButton />
 	  <div class="content">
-		<router-view />
+		<keep-alive include="Discover">
+		  <router-view />
+		</keep-alive>
 	  </div>
 	  <Footer v-if="showFooter" />
 	</div>

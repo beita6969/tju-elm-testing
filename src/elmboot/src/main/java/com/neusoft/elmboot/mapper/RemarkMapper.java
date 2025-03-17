@@ -1,6 +1,7 @@
 package com.neusoft.elmboot.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -30,4 +31,7 @@ public interface RemarkMapper {
 	
     @Select("select count(*) from remarks where businessId=#{businessId}")
     public int getRemarkCountByBusinessId(Integer businessId);
+    
+    @Select("SELECT r.*, b.businessName, b.businessImg, 5 as deliveryRating, r.remark as content, r.remarkDate as commentTime FROM remarks r JOIN business b ON r.businessId = b.businessId WHERE r.userId = #{userId} ORDER BY r.remarkId DESC")
+    public List<Map<String, Object>> getCommentsByUserId(String userId);
 }

@@ -8,7 +8,7 @@ import com.neusoft.elmboot.po.Food;
 @Mapper
 public interface FoodMapper {
 
- @Select("select * from food where businessId=#{businessId} order by foodId")
+ @Select("select * from food where businessId=#{businessId}")
  public List<Food> listFoodByBusinessId(Integer businessId);
  
  @Select("select * from food where foodId=#{foodId}")
@@ -16,5 +16,8 @@ public interface FoodMapper {
  
  @Insert("insert into food(foodName,foodExplain,foodImg,foodPrice,businessId) values(#{foodName},#{foodExplain},#{foodImg},#{foodPrice},#{businessId})")
  public int addFood(Food food);
+ 
+ @Select("select * from food where foodName like CONCAT('%',#{foodName},'%')")
+ public List<Food> listFoodBySearchName(String foodName);
  
 }
