@@ -109,7 +109,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
  **3.整体要求**  
 
- **1. 项目技术架构** 
+ **项目技术架构** 
 
  - JDK8 
 
@@ -117,7 +117,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
  - MySql 
 
- **2. 开发工具** 
+ **开发工具** 
 
  - STS（SpringToolSuite4）
 
@@ -125,7 +125,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
  - navicat 
 
- **3. 涉及的技术点** 
+ **涉及的技术点** 
 
  - 封装 JDBC 
 
@@ -166,7 +166,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
  **3.整体要求** 
 
- **1. 项目技术架构** 
+ **项目技术架构** 
 
 - HTML5 
 
@@ -174,13 +174,13 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
 - JavaScript（ES6 以上）
 
- **2. 开发工具** 
+ **开发工具** 
 
 - Hbuilder 
 
 - Chrome 浏览器
 
- **3. 涉及的技术点** 
+ **涉及的技术点** 
 
 - HTML5 标签的使用
 
@@ -245,7 +245,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
  **1.5 整体要求**  
 
- **1. 项目技术架构** 
+ **项目技术架构** 
 
 - Jdk8 
 
@@ -257,7 +257,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
 - Vue 
 
- **2. 开发工具** 
+ **开发工具** 
 
 - Hbuilder 
 
@@ -267,7 +267,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
 - Tomcat8.5 
 
- **3. 涉及的技术点** 
+ **涉及的技术点** 
 
 - AJAX 的使用
 
@@ -298,9 +298,9 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
 使用  **VUE+SpringBoot+AJAX**  技术开发 **前后端分离的 Web 应用程序** 
 
- **整体要求**  
+#### 整体要求
 
- **1. 项目技术架构** 
+ **项目技术架构** 
 
 - Jdk8 
 
@@ -312,7 +312,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
 - Vue 
 
- **2. 开发工具** 
+ **开发工具** 
 
 - Hbuilder 
 
@@ -324,7 +324,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
 - Maven 
 
- **3. 涉及的技术点** 
+ **涉及的技术点** 
 
 - AJAX 的使用
 
