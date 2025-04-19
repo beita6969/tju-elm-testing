@@ -83,7 +83,7 @@ npm run serve
   <img src="assets/Snipaste_2025-04-19_18-26-00.png" alt="TJU-ELM" style="width: auto; height: 400px;">
 </div>
 
-### 项目一. elm_admin --- JDBC
+### 项目一. elm_admin --- 后端JDBC版
 
 #### elm_admin 是饿了么 **JDBC** 版项目，采用了 **JDBC+Mysql** 开发，是纯后端的字符界面操作数据库的命令行应用程序。
 
@@ -147,7 +147,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
  
 
-### 项目二. elm_demo --- Vue3 --- html css js
+### 项目二. elm_demo --- html css js 前端搭建
 
 #### 饿了么前端版项目是采用 **HTML、CSS、JavaScript** 开发的前端静态网页项目。
 
@@ -213,16 +213,14 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
 
 
-### 项目三. Servlet
-
-#### 饿了么 **Servlet** 版本
+### 项目三. elmclient --- 前端升级为Vue3框架
 
  **1.项目概述** 
 
  **1.1.项目演示** 
 
 - 运行 “饿了么项目” ，演示应用程序效果，演示 “点餐业务线” 整体流程。
-- 本项目参照 “饿了么官网网页版”制作。饿了么网页版：http://h5.ele.me/
+- 本项目参照 “饿了么官网网页版”制作。
 - 本项目专注于完成点餐业务线功能， ”饿了么官网“中的其它功能暂不涉及 。
 
  **1.2.项目目标** 
@@ -231,7 +229,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 
  **1.3.项目中所涉及到相关知识点** 
 
-- A JAX的使用
+- AJAX的使用
 - Servlet的使用
 - Session的使用
 - 简单MVC封装
@@ -294,13 +292,7 @@ ii. 运行 ElmBusinessEntry 中的 main 函数为商家入口。
 - 多条件模糊查询的使用
 
 
-
-
-### 项目四. SpringBoot --- elmboot+elmclient
-
-####  **饿了么 SpringBoot 版本** 
-
-使用  **VUE+SpringBoot+AJAX**  技术开发 **前后端分离的 Web 应用程序** 
+### 项目四. elmboot --- 后端升级为SpringBoot框架
 
 #### 整体要求
 
