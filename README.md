@@ -79,14 +79,9 @@ npm run serve
 
 ## 三. 项目具体介绍
 
-项目根目录/
-├── src/                        # 源代码目录
-│   ├── elm_admin/              # 项目一：熟悉后端JDBC的使用
-│   ├── elm_demo/               # 项目二：搭建前端静态网页
-│   ├── elmclient/              # 项目三：前端升级为Vue3框架
-│   ├── elmboot/                # 项目四：后端升级为SpringBoot框架
-│   └── elmboot-sql/            # 项目四配套数据库脚本
-└── doc/                        # 项目文档目录
+<div style="display: flex; justify-content: space-between;">
+  <img src="assets/Snipaste_2025-04-19_18-26-00.png" alt="TJU-ELM" style="width: auto; height: 400px;">
+</div>
 
 ### 项目一. elm_admin --- JDBC
 
