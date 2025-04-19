@@ -84,6 +84,8 @@ npm run serve
   <img src="assets/Snipaste_2025-04-19_18-26-00.png" alt="TJU-ELM" style="width: auto; height: 400px;">
 </div>
 
+### 注：这个全栈项目最终使用的代码是elmclient前端+elmboot后端+elmboot-sql数据库。
+
 ### 3.1 项目一 elm_admin --- 后端JDBC版
 
 #### elm_admin 是饿了么 **JDBC** 版项目，采用了 **JDBC+Mysql** 开发，是纯后端的字符界面操作数据库的命令行应用程序。
