@@ -79,6 +79,15 @@ npm run serve
 
 ## 三. 项目具体介绍
 
+项目根目录/
+├── src/                        # 源代码目录
+│   ├── elm_admin/              # 项目一：熟悉后端JDBC的使用
+│   ├── elm_demo/               # 项目二：搭建前端静态网页
+│   ├── elmclient/              # 项目三：前端升级为Vue3框架
+│   ├── elmboot/                # 项目四：后端升级为SpringBoot框架
+│   └── elmboot-sql/            # 项目四配套数据库脚本
+└── doc/                        # 项目文档目录
+
 ### 项目一. elm_admin --- JDBC
 
 #### elm_admin 是饿了么 **JDBC** 版项目，采用了 **JDBC+Mysql** 开发，是纯后端的字符界面操作数据库的命令行应用程序。
