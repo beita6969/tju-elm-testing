@@ -397,8 +397,10 @@ elm_admin.sql 创建数据库和初始数据。
 - **问题反馈**：若发现脚本失效、功能异常或其他技术问题，请通过提交 <a href="https://github.com/JHM2004/tju_elm_project/issues" target="_blank">Issue</a> 及时告知  
 - **建议与优化**：对于项目改进建议或 Bug 报告，亦可通过 <a href="https://github.com/JHM2004/tju_elm_project/issues" target="_blank">Issue</a> 渠道反馈  
 - **代码贡献**：  
-  1. 请先 Fork 本项目至您的个人仓库  
-  2. 完成代码修改后，通过提交 <a href="https://github.com/JHM2004/tju_elm_project/pulls" target="_blank">Pull Request</a> 参与贡献  
+  1. 请先 Fork 本项目至您的个人仓库
+  2. 创建新的特性分支，如：feature/模块名_功能描述（可选）
+  3. 完成代码修改后，通过提交 <a href="https://github.com/JHM2004/tju_elm_project/pulls" target="_blank">Pull Request</a> 参与贡献
+### 欢迎对包括但不限于4.1-4.6章节中任何技术优化方向有兴趣/专长的开发者加入技术攻坚协作
  
 ## 6. 技术支持渠道
 
