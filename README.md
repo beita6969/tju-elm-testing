@@ -356,11 +356,11 @@ elm_admin.sql 创建数据库和初始数据。
 
 ## 4. 贡献指南
 
-- **问题反馈**：若发现脚本失效、功能异常或其他技术问题，请通过提交 [Issue](https://github.com/JHM2004/tju_elm_project/issues) 及时告知  
-- **建议与优化**：对于项目改进建议或 Bug 报告，亦可通过 [Issue](https://github.com/JHM2004/tju_elm_project/issues) 渠道反馈  
+- **问题反馈**：若发现脚本失效、功能异常或其他技术问题，请通过提交 <a href="https://github.com/JHM2004/tju_elm_project/issues" target="_blank">Issue</a> 及时告知  
+- **建议与优化**：对于项目改进建议或 Bug 报告，亦可通过 <a href="https://github.com/JHM2004/tju_elm_project/issues" target="_blank">Issue</a> 渠道反馈  
 - **代码贡献**：  
   1. 请先 Fork 本项目至您的个人仓库  
-  2. 完成代码修改后，通过提交 [Pull Request](https://github.com/JHM2004/tju_elm_project/pulls) 参与贡献
+  2. 完成代码修改后，通过提交 <a href="https://github.com/JHM2004/tju_elm_project/pulls" target="_blank">Pull Request</a> 参与贡献  
  
 ## 5. 技术支持渠道
 
