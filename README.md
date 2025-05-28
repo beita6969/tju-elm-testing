@@ -62,7 +62,7 @@ sudo curl -fsSL -o ~/deploy.sh https://www.yangyuxin.cn/elm/boot/deploy.sh && su
 
 ### 2.2 后端SpringBoot启动
 
-#### 直接使用JAVA集成开发环境(IntelliJ IDEA 等)启动elmboot\src\main\java\com\neusoft\elmboot\ElmbootApplication.java
+#### 使用JAVA集成开发环境(IntelliJ IDEA 等)启动elmboot\src\main\java\com\neusoft\elmboot\ElmbootApplication.java
 
 ### 2.3 前端Vue3启动
 
