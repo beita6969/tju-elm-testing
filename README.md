@@ -34,7 +34,19 @@ sudo curl -fsSL -o ~/deploy.sh https://www.yangyuxin.cn/elm/boot/deploy.sh && su
 
 #### 通过`您的主机ip + 11000端口 + 账号root + 密码123456`远程连接到`TJU-ELM`项目数据库MySQL；
 
-### 1.5 遇见任何问题可以联系
+### 1.5 问题反馈渠道
+
+### 项目反馈：
+
+#### 您可以通过提交 [Issue](https://github.com/JHM2004/tju_elm_project/issues) 反馈包括但不限于以下内容：  
+
+- 项目功能建议  
+
+- 系统问题报告  
+
+- Bug 提交
+
+### 遇见任何问题可以联系:
 
 #### QQ 2011342963
 
@@ -344,6 +356,14 @@ elm_admin.sql 创建数据库和初始数据。
 
 ## 4. 贡献指南
 
-- 如果您愿意支持本项目，欢迎通过提交 Pull Request 参与贡献
+- **问题反馈**：若发现脚本失效、功能异常或其他技术问题，请通过提交 [Issue](https://github.com/JHM2004/tju_elm_project/issues) 及时告知  
+- **建议与优化**：对于项目改进建议或 Bug 报告，亦可通过 [Issue](https://github.com/JHM2004/tju_elm_project/issues) 渠道反馈  
+- **代码贡献**：  
+  1. 请先 Fork 本项目至您的个人仓库  
+  2. 完成代码修改后，通过提交 [Pull Request](https://github.com/JHM2004/tju_elm_project/pulls) 参与贡献
+ 
+## 5. 技术支持渠道
 
-- 如遇到脚本失效或其他问题，请通过提交 Issue 反馈，我们将尽快处理
+如您在使用过程中遇到任何问题，可通过以下途径获取支持：  
+- **技术支持QQ**：2011342963  
+- **用户交流QQ群**：165309200  
