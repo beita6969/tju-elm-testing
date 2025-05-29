@@ -22,6 +22,8 @@ sudo curl -fsSL -o ~/deploy.sh https://www.yangyuxin.cn/elm/boot/deploy.sh && su
 
 ![pintu-fulicat.com-1741612663611](assets/pintu-fulicat.com-1741612663611.png)
 
+##### 注: 此项目主要适配移动端，如您使用PC网页版，可以按F12键进入浏览器开发者工具，点击“Toggle device toolbar”切换成移动端展示。
+
 ### 1.3 项目总效果图
 
 ![pinjie](assets/pinjie.jpeg)
@@ -407,7 +409,7 @@ elm_admin.sql 创建数据库和初始数据。
 ### 欢迎对包括但不限于第4章节中任何技术优化方向有兴趣/专长的开发者加入技术攻坚协作
 
 ---
- 
+
 ## 6. 技术支持渠道
 
 如您在使用过程中遇到任何问题，可通过以下途径获取支持：  

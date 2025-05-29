@@ -1,0 +1,13 @@
+docker build -f Dockerfile -t elmboot-app:latest .
+docker tag elmboot-app:latest jhm2004/tju-springboot-elm:latest
+docker login (接着复制生成的one-time code, 点击链接输入code, 登录成功,注意复制code的时候不要将命令行打断,不行的话就手动输入code)
+docker push jhm2004/tju-springboot-elm:latest
+
+
+
+
+VM_IP=$(curl -s https://api.ipify.org) docker compose -f compose.yaml up -d
+
+
+# 单独run elmboot-app
+docker run --name elmboot-app -p 8888:8080 --env VITE_API_BASE_URL=http://${VM_IP}:8888/ --network springboot-elm_elmboot elmboot-app:latest
