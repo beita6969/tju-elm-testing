@@ -12,7 +12,7 @@ import com.neusoft.elmboot.po.Likes;
 import com.neusoft.elmboot.service.LikesService;
 
 @RestController
-@RequestMapping("/LikeController")
+@RequestMapping("/LikesController")
 public class LikesController {
 	
 	 @Autowired

@@ -14,7 +14,7 @@ import com.neusoft.elmboot.service.BusinessService;
 import com.neusoft.elmboot.service.RemarkService;
 
 @RestController
-@RequestMapping("/CommentController")
+@RequestMapping("/RemarkController")
 public class RemarkController {
     @Autowired
     private RemarkService remarkService;

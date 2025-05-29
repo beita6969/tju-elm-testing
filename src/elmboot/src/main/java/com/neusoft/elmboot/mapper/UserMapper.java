@@ -12,7 +12,7 @@ public interface UserMapper {
     public User getUserByIdByPass(User user);
 
     @Insert("insert into user values(#{userId},#{password},#{userName},#{userSex},#{userImg},1)")
-    public int saveUser2(User user);
+    public int saveUser(User user);
 
     @Update("UPDATE user u SET u.userImg =#{userImg} WHERE u.userId =#{userId}")
     public int changeUserAvatar(UserAvatar userAvatar);
@@ -26,13 +26,10 @@ public interface UserMapper {
     @Select("select count(*) from user where userId=#{userId}")
     public int userIdExists(User user);
 
-    // 保存用户信息
-    int saveUser(User user);
-
-    // 根据用户ID和密码查询用户
-    User getUserByIdAndPassword(@Param("userId") String userId, @Param("password") String password);
-
+    @Select("SELECT * FROM user WHERE userId = #{userId} AND password = #{password} AND delTag = 1")
+    public User getUserByIdAndPassword(@Param("userId") String userId, @Param("password") String password);
+    
     @Select("SELECT * FROM user WHERE userId = #{userId} AND delTag = 1")
-    User getUserById(@Param("userId") String userId);
+    public User getUserById(@Param("userId") String userId);
 
 }
