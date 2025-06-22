@@ -1,0 +1,29 @@
+server:
+  port: 8080    #端口（默认也是8080）
+  servlet:
+    context-path: /
+
+logging:
+  level:
+    org:
+      springframework: debug   #输出的日志文件更详细，方便今后出问题了做调试
+    com:
+      neusoft:
+        elmboot:
+          mapper: debug     #将mapper接口执行的所有类型的日志都以dubug的形式输出出来
+
+#数据库连接需要的东西
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/elm?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false
+#    url: jdbc:mysql://localhost:3306/elm?characterEncoding=utf-8&serverTimezone=UTC&useSSL=false
+    username: root
+    password: 123456
+
+#配置mybatis的一些文件
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.neusoft.elmboot.po      #扫描整个po包，给实体类设置别名
+  configuration:
+    map-underscore-to-camel-case: true
