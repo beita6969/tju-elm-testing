@@ -1,0 +1,39 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server"],
+      "description": "Playwright automation for E2E testing"
+    },
+    "playwright-official": {
+      "command": "npx", 
+      "args": ["-y", "@playwright/mcp"],
+      "description": "Official Playwright MCP server"
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"], 
+      "description": "Puppeteer automation for Chrome testing"
+    },
+    "fetch": {
+      "command": "python",
+      "args": ["-m", "mcp_server_fetch"],
+      "env": {
+        "PYTHONPATH": "/Users/zhangmingda/owl/.venv/lib/python3.11/site-packages"
+      },
+      "description": "HTTP requests and API testing"
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest", 
+        "run",
+        "@smithery-ai/brave-search",
+        "--config",
+        "{\"braveApiKey\":\"BSASu8Dag2ZJTMq88wXloLAKLYd19_N\"}"
+      ],
+      "description": "Web search capabilities for information gathering"
+    }
+  }
+}

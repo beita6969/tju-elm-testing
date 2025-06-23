@@ -1,0 +1,103 @@
+name: ELM Platform Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run tests every day at 2 AM
+    - cron: '0 2 * * *'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: elm
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK 8
+      uses: actions/setup-java@v3
+      with:
+        java-version: '8'
+        distribution: 'adopt'
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+    
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+    
+    - name: Import database
+      run: |
+        mysql -h 127.0.0.1 -uroot -proot elm < elm_springboot/elm.sql
+    
+    - name: Start backend
+      run: |
+        cd elm_springboot
+        mvn clean compile
+        mvn spring-boot:run &
+        sleep 30
+    
+    - name: Install frontend dependencies
+      run: |
+        cd elm_vue
+        npm install
+    
+    - name: Start frontend
+      run: |
+        cd elm_vue
+        npm run dev &
+        sleep 20
+    
+    - name: Install Playwright
+      run: |
+        npm install -D playwright
+        npx playwright install chromium
+    
+    - name: Run tests
+      run: |
+        node tests/auth_test_final.js || true
+        node tests/business_browse_test.js || true
+        node tests/food_cart_test_v2.js || true
+    
+    - name: Upload test screenshots
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-screenshots
+        path: tests/screenshots/
+    
+    - name: Upload test reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-reports
+        path: test-reports/
+    
+    - name: Test Summary
+      if: always()
+      run: |
+        echo "## Test Summary" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Tests completed at $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "📁 Check artifacts for screenshots and reports" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,41 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test outputs
+tests/screenshots/*.png
+*.log
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Java/Spring Boot
+target/
+*.class
+*.jar
+*.war
+
+# Database
+*.db
+*.sqlite
+
+# Environment files
+.env
+.env.local
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Build directories
+dist/
+build/
